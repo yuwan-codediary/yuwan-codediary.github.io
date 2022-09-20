@@ -1,0 +1,1028 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>用于数据可视化的数据预处理 | share station</title><meta name="keywords" content="鱼丸的学习笔记"><meta name="author" content="Zhang Yuhua"><meta name="copyright" content="Zhang Yuhua"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="读取数据数据的读取是进行数据预处理、数据建模和分析的基础。对于不同的数据文件，pandas提供了不同函数进行读取。 pandas内置了10余种读写函数。常见的数据文件格式有3种形式，分别是CSV文件、Excel文件和数据库。 读取CSV文件数据CSV文件是以纯文本形式存储表格数据（数字和文本）。 CSV文件由任意数目的记录组成，记录间以某种换行符分隔。每条记录由字段组成，字段间的分隔符是其他字符或">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用于数据可视化的数据预处理">
+<meta property="og:url" content="https://yuwan-codediary.github.io/2022/09/16/%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9A%84%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="share station">
+<meta property="og:description" content="读取数据数据的读取是进行数据预处理、数据建模和分析的基础。对于不同的数据文件，pandas提供了不同函数进行读取。 pandas内置了10余种读写函数。常见的数据文件格式有3种形式，分别是CSV文件、Excel文件和数据库。 读取CSV文件数据CSV文件是以纯文本形式存储表格数据（数字和文本）。 CSV文件由任意数目的记录组成，记录间以某种换行符分隔。每条记录由字段组成，字段间的分隔符是其他字符或">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-16T08:11:33.000Z">
+<meta property="article:modified_time" content="2022-09-16T08:11:58.420Z">
+<meta property="article:author" content="Zhang Yuhua">
+<meta property="article:tag" content="鱼丸的学习笔记">
+<meta name="twitter:card" content="summary"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://yuwan-codediary.github.io/2022/09/16/%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9A%84%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: [object Object]
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '用于数据可视化的数据预处理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-09-16 16:11:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs头像.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">share station</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">用于数据可视化的数据预处理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-16T08:11:33.000Z" title="发表于 2022-09-16 16:11:33">2022-09-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-09-16T08:11:58.420Z" title="更新于 2022-09-16 16:11:58">2022-09-16</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="用于数据可视化的数据预处理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h1><p>数据的读取是进行数据预处理、数据建模和分析的基础。对于不同的数据文件，pandas提供了不同函数进行读取。</p>
+<p>pandas内置了10余种读写函数。常见的数据文件格式有3种形式，分别是CSV文件、Excel文件和数据库。</p>
+<h2 id="读取CSV文件数据"><a href="#读取CSV文件数据" class="headerlink" title="读取CSV文件数据"></a>读取CSV文件数据</h2><p>CSV文件是以纯文本形式存储表格数据（数字和文本）。</p>
+<p>CSV文件由任意数目的记录组成，记录间以某种换行符分隔。每条记录由字段组成，字段间的分隔符是其他字符或字符串，最常见的是逗号或制表符。</p>
+<p>CSV文件是一种通用的、相对简单的文件格式，被用户、商业和科学广泛应用。</p>
+<p>pandas提供了read_csv函数，用于读取CSV文件；提供了to_csv函数，用于将结构化数据写入CSV文件，以实现数据存储。</p>
+<h3 id="csv文件读取"><a href="#csv文件读取" class="headerlink" title="csv文件读取"></a>csv文件读取</h3><p><strong>read_csv函数的基本使用格式如下</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.read_csv(filepath_or_buffer, sep=<span class="string">&#x27;\t&#x27;</span>, header=<span class="string">&#x27;infer&#x27;</span>, names=<span class="literal">None</span>, index_col=<span class="literal">None</span>, dtype=<span class="literal">None</span>, engine=<span class="literal">None</span>, nrows=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>filepath</strong></td>
+<td>接收str，代表文件路径。无默认值</td>
+</tr>
+<tr>
+<td><strong>sep</strong></td>
+<td>接收str，代表分隔符。默认为“,”</td>
+</tr>
+<tr>
+<td><strong>header</strong></td>
+<td>接收int或sequence，表示将某行数据作为列名。默认为infer，表示自动识别</td>
+</tr>
+<tr>
+<td><strong>names</strong></td>
+<td>接收array，表示列名。默认为None</td>
+</tr>
+<tr>
+<td><strong>index_col</strong></td>
+<td>接收int、sequence或False，表示索引列的位置，取值为sequence则代表多重索引。默认为None</td>
+</tr>
+<tr>
+<td><strong>dtype</strong></td>
+<td>接收dict，代表写入的数据类型（列名为key，数据格式为values）。默认为None</td>
+</tr>
+<tr>
+<td><strong>engine</strong></td>
+<td>接收C或Python，代表数据解析引擎。默认为C</td>
+</tr>
+<tr>
+<td><strong>nrows</strong></td>
+<td>接收int，表示读取前n行。默认为None</td>
+</tr>
+</tbody></table>
+<p><strong>使用read_csv函数读取销售流水记录</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用read_csv函数读取销售流水记录</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd </span><br><span class="line">data1 = pd.read_csv(<span class="string">&quot;./data/销售流水记录1.csv&quot;</span>,encoding=<span class="string">&#x27;gb18030&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;使用read_csv函数读取的销售流水记录表的长度为：&quot;</span>,<span class="built_in">len</span>(data1))</span><br><span class="line"><span class="comment"># 使用read_csv函数读取的销售流水记录表的长度为： 611200</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>更改参数来读取销售流水记录表</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">data2 = pd.read_csv(<span class="string">&quot;./data/销售流水记录2.csv&quot;</span>,header=<span class="literal">None</span>,encoding=<span class="string">&#x27;gb18030&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;使用read_csv函数读取的销售流水记录表的长度为：&quot;</span>,<span class="built_in">len</span>(data2))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;列名为None时订单信息表：&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(data2.iloc[<span class="number">0</span>:<span class="number">5</span>,<span class="number">0</span>:<span class="number">4</span>])</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915172407966.png" alt="image-20220915172407966"></p>
+<p><strong>使用utf-8解析销售流水记录表</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data3 = pd.read_csv(<span class="string">&#x27;./data/销售流水记录2.csv&#x27;</span>,header=<span class="literal">None</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"><span class="comment">#UnicodeDecodeError: &#x27;utf-8&#x27; codec can&#x27;t decode byte 0xbc in position 158: invalid start byte</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="csv文件存储"><a href="#csv文件存储" class="headerlink" title="csv文件存储"></a>csv文件存储</h3><p>文本文件的存储和读取类似，结构化数据可以通过pandas中的to_csv函数实现以csv文件格式存储文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*DataFrame.to_csv**(**path_or_buf**=<span class="literal">None</span>,* *sep**=<span class="string">&#x27;,&#x27;</span>,* *na_rep**=<span class="string">&#x27;&#x27;</span>, columns=<span class="literal">None</span>, header=<span class="literal">True</span>, index=<span class="literal">True</span>,* *index_label**=<span class="literal">None</span>, mode=<span class="string">&#x27;w&#x27;</span>, encoding=<span class="literal">None</span>)*</span><br></pre></td></tr></table></figure>
+
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>path_or_buf</strong></td>
+<td>接收str，表示文件路径。无默认值</td>
+</tr>
+<tr>
+<td><strong>sep</strong></td>
+<td>接收str，表示分隔符。默认为“,”</td>
+</tr>
+<tr>
+<td><strong>na_rep</strong></td>
+<td>接收str，表示缺失值。默认为“”</td>
+</tr>
+<tr>
+<td><strong>columns</strong></td>
+<td>接收list，表示写出的列名。默认为None</td>
+</tr>
+<tr>
+<td><strong>header</strong></td>
+<td>接收boolean，表示是否将列名写出。默认为True</td>
+</tr>
+<tr>
+<td><strong>index</strong></td>
+<td>接收boolean，表示是否将行名（索引）写出。默认为True</td>
+</tr>
+<tr>
+<td><strong>index_labels</strong></td>
+<td>接收sequence，表示索引名。默认为None</td>
+</tr>
+<tr>
+<td><strong>mode</strong></td>
+<td>接收特定str，表示数据写入模式。默认为w</td>
+</tr>
+<tr>
+<td><strong>encoding</strong></td>
+<td>接收特定str，表示存储文件的编码格式。默认为None</td>
+</tr>
+</tbody></table>
+<p><strong>使用to_csv函数将销售流水记录表写入CSV文件</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;销售流水记录表写入文本文件前目录内文件列表为：\n&#x27;</span>,os.listdir(<span class="string">&#x27;./tmp/&#x27;</span>))</span><br><span class="line">data1.to_csv(<span class="string">&#x27;./tmp/SaleInfo.csv&#x27;</span>,sep=<span class="string">&#x27;;&#x27;</span>,index=<span class="literal">False</span>) <span class="comment"># 将data1以CSV格式存储</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;销售流水记录表写入文本文件后目录内文件列表为：\n&#x27;</span>,os.listdir(<span class="string">&#x27;./tmp/&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915172809360.png" alt="image-20220915172809360"></p>
+<h2 id="读取Excel文件数据"><a href="#读取Excel文件数据" class="headerlink" title="读取Excel文件数据"></a>读取Excel文件数据</h2><h3 id="excel文件读取"><a href="#excel文件读取" class="headerlink" title="excel文件读取"></a>excel文件读取</h3><p>pandas提供了read_excel函数来读取“xls”“xlsx”两种Excel文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*pandas.read_excel**(io,* *sheetname**=<span class="number">0</span>, header=<span class="number">0</span>,* *index_col**=<span class="literal">None</span>, names=<span class="literal">None</span>,* *dtype**=<span class="literal">None</span>)*</span><br></pre></td></tr></table></figure>
+
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>io</strong></td>
+<td>接收str，表示文件路径。无默认值</td>
+</tr>
+<tr>
+<td><strong>sheetname</strong></td>
+<td>接收str、int，表示Excel表内数据的分表位置。默认为0</td>
+</tr>
+<tr>
+<td><strong>header</strong></td>
+<td>接收int或sequence，表示将某行数据作为列名。默认为infer，表示自动识别</td>
+</tr>
+<tr>
+<td><strong>names</strong></td>
+<td>接收int、sequence或False，表示索引列的位置，取值为sequence则代表多重索引。默认为None</td>
+</tr>
+<tr>
+<td><strong>index_col</strong></td>
+<td>接收int、sequence或False，表示索引列的位置，取值为sequence则代表多重索引。默认为None</td>
+</tr>
+<tr>
+<td><strong>dtype</strong></td>
+<td>接收dict，表示写入的数据类型（列名为key，数据格式为values）。默认为None</td>
+</tr>
+</tbody></table>
+<p><strong>使用read_excel函数读取折扣信息表</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data3 = pd.read_excel(<span class="string">&#x27;./data/折扣信息表.xlsx&#x27;</span>) <span class="comment"># 读取折扣信息表的数据</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;data3信息长度为：&#x27;</span>,<span class="built_in">len</span>(data3))</span><br><span class="line"><span class="comment">#data3信息长度为： 11420</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="excel文件存储"><a href="#excel文件存储" class="headerlink" title="excel文件存储"></a>excel文件存储</h3><p>将文件存储为Excel文件，可以使用to_excel方法。其语法格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*DataFrame.to_excel**(**excel_writer**=<span class="literal">None</span>,* *sheetname**=<span class="literal">None</span>,* *na_rep**=<span class="string">&#x27;&#x27;</span>, header=<span class="literal">True</span>, index=<span class="literal">True</span>,* *index_label**=<span class="literal">None</span>, mode=<span class="string">&#x27;w&#x27;</span>, encoding=<span class="literal">None</span>)*</span><br></pre></td></tr></table></figure>
+
+<p>to_excel函数和to_csv函数的常用参数基本一致，区别之处在于指定存储文件的文件路径参数名称为excel_writer，并且没有sep参数。此外，还增加了一个sheetnames参数，用于指定存储的Excel Sheet的名称，默认为sheet1。</p>
+<p><strong>使用to_excel函数将折扣信息表存储为excel文件</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data3.to_excel(<span class="string">&#x27;./tmp/data_save.xlsx&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;data3写入Excel文件后目录内文件列表为：\n&#x27;</span>,os.listdir(<span class="string">&#x27;./tmp/&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915173201563.png" alt="image-20220915173201563"></p>
+<h2 id="读取数据库数据"><a href="#读取数据库数据" class="headerlink" title="读取数据库数据"></a>读取数据库数据</h2><h3 id="数据库数据读取"><a href="#数据库数据读取" class="headerlink" title="数据库数据读取"></a>数据库数据读取</h3><p>pandas提供了读取与存储关系型数据库数据的函数与方法。除了pandas库外，还需要使用SQLAlchemy库建立对应的数据库连接。SQLAlchemy配合相应数据库的Python连接工具，使用create_engine函数，建立一个数据库连接。</p>
+<p>creat_engine中填入的是一个连接字符串。在使用Python的SQLAlchemy时，MySQL和Oracle数据库连接字符串的格式如下：</p>
+<p>   <strong>数据库产品名+连接工具名：&#x2F;&#x2F;用户名:密码@数据库IP地址:数据库端口号&#x2F;数据库名称？charset &#x3D;数据库     数据编码</strong></p>
+<p><strong>read_sql_table只能够读取数据库的某一个表格，不能实现查询的操作。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.read_sql_table(table_name, con, schema=<span class="literal">None</span>, index_col=<span class="literal">None</span>, coerce_float=<span class="literal">True</span>, columns=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>read_sql_query则只能实现查询操作，不能直接读取数据库中的某个表。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.read_sql_query(sql, con, index_col=<span class="literal">None</span>, coerce_float=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>read_sql是两者的综合，既能够读取数据库中的某一个表，也能够实现查询操作。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.read_sql(sql, con, index_col=<span class="literal">None</span>, coerce_float=<span class="literal">True</span>, columns=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>sql</strong> <strong>or</strong> <strong>table_name</strong></td>
+<td>接收str，表示读取的数据的表名或sql语句。无默认值</td>
+</tr>
+<tr>
+<td><strong>con</strong></td>
+<td>接收数据库连接，表示数据库连接信息。无默认值</td>
+</tr>
+<tr>
+<td><strong>index_col</strong></td>
+<td>接收int、sequence或False，表示设定的列作为行名，如果是一个数列，那么是多重索引。默认为None</td>
+</tr>
+<tr>
+<td><strong>coerce_float</strong></td>
+<td>接收boolean，表示将数据库中的decimal类型的数据转换为pandas中的float64类型的数据。默认为True</td>
+</tr>
+<tr>
+<td><strong>columns</strong></td>
+<td>接收list，表示读取数据的列名。默认为None</td>
+</tr>
+</tbody></table>
+<h3 id="数据存储"><a href="#数据存储" class="headerlink" title="数据存储"></a>数据存储</h3><p>将DataFrame数据写入数据库中，同样也要依赖SQLAlchemy的数据库连接。数据库数据读取有3个函数，但数据存储则只有一个to_sql()方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DataFrame.to_sql(name, con, schema=<span class="literal">None</span>, if_exists=<span class="string">&#x27;fail&#x27;</span>, index=<span class="literal">True</span>, index_label=<span class="literal">None</span>, dtype=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>name</strong></td>
+<td>接收str，表示数据库表名。无默认值</td>
+</tr>
+<tr>
+<td><strong>con</strong></td>
+<td>接收数据库连接，表示数据库连接信息。无默认值</td>
+</tr>
+<tr>
+<td><strong>if_exists</strong></td>
+<td>接收fail、replace、append。fail表示如果表名存在那么不执行写入操作；replace表示如果存在，那么将原数据库表删除，再重新创建；append则表示在原数据库表的基础上追加数据。默认为fail</td>
+</tr>
+<tr>
+<td><strong>index</strong></td>
+<td>接收boolean，表示是否将行索引作为数据传入数据库。默认True</td>
+</tr>
+<tr>
+<td><strong>index_label</strong></td>
+<td>接收str或sequence，表示是否引用索引名称，如果index参数为True，此参数为None，那么使用默认名称。如果为多重索引，那么必须使用sequence形式。默认为None</td>
+</tr>
+<tr>
+<td><strong>dtype</strong></td>
+<td>接收dict，表示写入的数据类型（列名为key，数据格式为values）。默认为None</td>
+</tr>
+</tbody></table>
+<h1 id="处理数据"><a href="#处理数据" class="headerlink" title="处理数据"></a>处理数据</h1><h2 id="检验数据"><a href="#检验数据" class="headerlink" title="检验数据"></a>检验数据</h2><h3 id="一致性检验"><a href="#一致性检验" class="headerlink" title="一致性检验"></a>一致性检验</h3><p>数据的不一致性是指各类数据的矛盾性、不相容性。数据不一致是数据冗余、并发控制不当或各种故障、错误造成的。对数据进行分析时需要对数据进行一致性检验，检查数据中是否存在不一致的值。</p>
+<h4 id="时间检验"><a href="#时间检验" class="headerlink" title="时间检验"></a>时间检验</h4><p>时间不一致是指数据在合并或联立后时间字段出现时间范围、时间粒度、时间格式和时区不一致等情况。</p>
+<p>时间范围不一致通常是不同表的时间字段中所包含的时间的取值范围不一致。如下两张表的时间字段的取值范围分别为2020年3月2日至2020年3月29日和2020年3月15日至2020年4月18日，此时如果需要联立两张表，那么需要对时间字段进行补全，否则将会产生大量的空值或导致报错。</p>
+<table>
+<thead>
+<tr>
+<th><strong>create_time_1</strong></th>
+<th><strong>create_time_2</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2020-03-02  09:36:00</td>
+<td>2020-03-15  11:37:00</td>
+</tr>
+<tr>
+<td>2020-03-03  10:31:00</td>
+<td>2020-03-16  10:43:00</td>
+</tr>
+<tr>
+<td>……</td>
+<td>……</td>
+</tr>
+<tr>
+<td>2020-03-28  14:15:00</td>
+<td>2020-04-17  18:23:00</td>
+</tr>
+<tr>
+<td>2020-03-29  20:28:00</td>
+<td>2020-04-18  22:45:00</td>
+</tr>
+</tbody></table>
+<p>时间粒度不一致通常是由于在数据采集时没有设置统一的采集频率，如系统升级后采集频率发生了改变，或不同系统间的采集频率不一致，导致采集到的数据的时间粒度不一致。</p>
+<table>
+<thead>
+<tr>
+<th><strong>cresat_time_1</strong></th>
+<th><strong>cresat_time_2</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2020&#x2F;07&#x2F;20  12:44:00</td>
+<td>2020&#x2F;8&#x2F;7  15:11:30</td>
+</tr>
+<tr>
+<td>2020&#x2F;07&#x2F;20  12:45:00</td>
+<td>2020&#x2F;8&#x2F;7  15:12:00</td>
+</tr>
+<tr>
+<td>2020&#x2F;07&#x2F;20  12:46:00</td>
+<td>2020&#x2F;8&#x2F;7  15:12:30</td>
+</tr>
+<tr>
+<td>2020&#x2F;07&#x2F;20  12:47:00</td>
+<td>2020&#x2F;8&#x2F;7  15:13:00</td>
+</tr>
+<tr>
+<td>2020&#x2F;07&#x2F;20  12:49:00</td>
+<td>2020&#x2F;8&#x2F;7  15:13:30</td>
+</tr>
+<tr>
+<td>2020&#x2F;07&#x2F;20  12:50:00</td>
+<td>2020&#x2F;8&#x2F;7  15:14:00</td>
+</tr>
+</tbody></table>
+<p>时间格式不一致通常是不同系统之间设置时间字段时的采用的格式不一致导致时间格式不一致的情况，尤其是当系统中的时间字段使用字符串格式的时候。</p>
+<table>
+<thead>
+<tr>
+<th><strong>order_time1</strong></th>
+<th><strong>order_time2</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2020-09-01  11:25:00</td>
+<td>20201003122600</td>
+</tr>
+<tr>
+<td>2020-09-01  11:30:00</td>
+<td>20201003123100</td>
+</tr>
+<tr>
+<td>2020-09-01  11:34:00</td>
+<td>20201003123600</td>
+</tr>
+<tr>
+<td>2020-09-01  11:41:00</td>
+<td>20201003125100</td>
+</tr>
+<tr>
+<td>2020-09-01  11:45:00</td>
+<td>20201003125500</td>
+</tr>
+</tbody></table>
+<p>时区不一致通常是由于在数据传输时的设置不合理，所以导致时间字段出现不一致的情况，如由于在设置海外的服务器时没有修改时区，所以导致数据在传输回本地的服务器时因时区差异造成时间不一致。</p>
+<table>
+<thead>
+<tr>
+<th><strong>local_sever_time</strong></th>
+<th><strong>global_sever_time</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2020&#x2F;08&#x2F;07  12:12:30</td>
+<td>2020&#x2F;08&#x2F;07  17:12:30</td>
+</tr>
+<tr>
+<td>2020&#x2F;08&#x2F;07  12:13:00</td>
+<td>2020&#x2F;08&#x2F;07  17:13:00</td>
+</tr>
+<tr>
+<td>2020&#x2F;08&#x2F;07  12:13:30</td>
+<td>2020&#x2F;08&#x2F;07  17:13:30</td>
+</tr>
+<tr>
+<td>2020&#x2F;08&#x2F;07  12:14:00</td>
+<td>2020&#x2F;08&#x2F;07  17:14:00</td>
+</tr>
+<tr>
+<td>2020&#x2F;08&#x2F;07  12:14:30</td>
+<td>2020&#x2F;08&#x2F;07  17:14:30</td>
+</tr>
+</tbody></table>
+<h4 id="字段信息校验"><a href="#字段信息校验" class="headerlink" title="字段信息校验"></a>字段信息校验</h4><p>同名异义：两个名称相同的字段所代表的实际意义不一致。</p>
+<pre><code>  如下表所示，数据源A中的ID字段和数据源B中的ID字段分别描述的是商品编号和订单编号，即描述的是不同的实体。
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>ID_A</strong></th>
+<th><strong>ID_B</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2003117399</td>
+<td>1014000141</td>
+</tr>
+<tr>
+<td>2003117402</td>
+<td>1014000141</td>
+</tr>
+<tr>
+<td>2003117403</td>
+<td>4722000342</td>
+</tr>
+<tr>
+<td>2003117407</td>
+<td>4722000342</td>
+</tr>
+<tr>
+<td>2003117412</td>
+<td>4722000342</td>
+</tr>
+</tbody></table>
+<p>异名同义：两个名称不同的字段所代表的实际意义是一致的。</p>
+<p>   如下表所示，数据源A中的sales_dt字段和数据源B中的sales_date字段都描述的为销售日期，即A.sales_dt＝B.sales_date。</p>
+<table>
+<thead>
+<tr>
+<th><strong>A.sales_dt</strong></th>
+<th><strong>B.sales_date</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2020&#x2F;3&#x2F;02</td>
+<td>2020&#x2F;3&#x2F;02</td>
+</tr>
+<tr>
+<td>2020&#x2F;3&#x2F;04</td>
+<td>2020&#x2F;3&#x2F;04</td>
+</tr>
+<tr>
+<td>2020&#x2F;3&#x2F;11</td>
+<td>2020&#x2F;3&#x2F;11</td>
+</tr>
+<tr>
+<td>2020&#x2F;3&#x2F;19</td>
+<td>2020&#x2F;3&#x2F;19</td>
+</tr>
+<tr>
+<td>2020&#x2F;3&#x2F;24</td>
+<td>2020&#x2F;3&#x2F;24</td>
+</tr>
+</tbody></table>
+<h3 id="缺失值检验"><a href="#缺失值检验" class="headerlink" title="缺失值检验"></a>缺失值检验</h3><ul>
+<li>缺失值是指数据中由于缺少信息而造成的数据的聚类、分组或截断。缺失值按缺失的分布模式可以分为完全随机缺失、随机缺失和完全非随机缺失。</li>
+<li>完全随机缺失（Missing Completely At Random，MCAR）指的是数据的缺失是随机的，数据的缺失不依赖于任何不完全变量或完全变量；</li>
+<li>随机缺失（Missing At Random，MAR）指的是数据的缺失不是完全随机的，即该类数据的缺失依赖于其他完全变量；</li>
+<li>完全非随机缺失（Missing Not At Random，MNAR）指的是数据的缺失依赖于不完全变量自身。</li>
+</ul>
+<p><strong>在Python中，可以利用下表所示的缺失值校验函数检测数据中是否存在缺失值。</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>函数名</strong></th>
+<th><strong>函数功能</strong></th>
+<th><strong>所属扩展库</strong></th>
+<th><strong>格式</strong></th>
+<th><strong>参数及返回值</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>isnull</strong></td>
+<td>判断是否空值</td>
+<td>pandas</td>
+<td>D.isnull()或pandas.isnull(D)</td>
+<td>参数为DataFrame或pandas的Series对象，返回的是一个布尔类型的DataFrame或Series</td>
+</tr>
+<tr>
+<td><strong>notnull</strong></td>
+<td>判断是否非空值</td>
+<td>pandas</td>
+<td>D.notnull()或pandas.notnull(D)</td>
+<td>参数为DataFrame或pandas的Series对象，返回的是一个布尔类型的DataFrame或Series</td>
+</tr>
+<tr>
+<td><strong>count</strong></td>
+<td>非空元素计算</td>
+<td></td>
+<td>D.count()</td>
+<td>参数为DataFrame或pandas的Series对象，返回的是DataFrame中每一列非空值个数或Series对象的非空值个数</td>
+</tr>
+</tbody></table>
+<p><strong>缺失值识别与缺失率统计</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd </span><br><span class="line">data = pd.read_excel(<span class="string">&quot;./data/data.xlsx&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;data中元素是否为空值的布尔型DataFrame为：\n&quot;</span>,data.isnull())</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;data中元素是否为非空值的布尔型DataFrame为:\n&quot;</span>,data.notnull())</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;data中每个特征对应的非空值数为：\n&quot;</span>,data.count())</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;data中每个特征对应的缺失率为:\n&quot;</span>,<span class="number">1</span>-data.count()/<span class="built_in">len</span>(data))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915184055848.png" alt="image-20220915184055848"></p>
+<h3 id="异常值检验"><a href="#异常值检验" class="headerlink" title="异常值检验"></a>异常值检验</h3><ul>
+<li>异常值是指样本中的个别值，其数值明显偏离所属样本的其余观测值。</li>
+<li>假设数据服从正态分布，一组数据中若与平均值的偏差超过两倍标准差的数据则为异常值，称为四分位距准则（IQR）；与平均值的偏差超过3倍标准差的数据则为高度异常的异常值，称为<em>3σ</em>  原则。</li>
+<li>在实际测量中，异常值的产生一般是由于疏忽、失误或突然发生的不该发生的原因造成的，如读错、记错、仪器示值突然跳动、突然震动、操作失误等。因为异常值的存在会歪曲测量结果，所以需要检测数据中是否存在异常值。</li>
+</ul>
+<p><strong>在Python中可以利用下表中的函数进行异常值检测。</strong></p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915174517575.png" alt="image-20220915174517575"></p>
+<p><strong>检测元组array中的异常值及其所占比例</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">arr = (<span class="number">18.02</span>, <span class="number">63.77</span>, <span class="number">79.52</span>, <span class="number">29.89</span>, <span class="number">68.86</span>, <span class="number">54.49</span>, <span class="number">92.59</span>, <span class="number">376.04</span>, <span class="number">5.92</span>, <span class="number">83.75</span>, <span class="number">70.12</span>, <span class="number">459.38</span>,</span><br><span class="line">       <span class="number">82.96</span>, <span class="number">37.81</span>, <span class="number">65.08</span>, <span class="number">59.07</span>, <span class="number">47.56</span>, <span class="number">86.96</span>, <span class="number">38.38</span>, <span class="number">1100.34</span>, <span class="number">7.98</span>, <span class="number">2.82</span>, <span class="number">74.76</span>, <span class="number">87.64</span>,</span><br><span class="line">       <span class="number">67.90</span>, <span class="number">89.9</span>, <span class="number">2000.67</span>)</span><br><span class="line"><span class="comment"># 利用箱线图的IQR准则对异常值进行检测</span></span><br><span class="line">Percentile = np.percentile(arr,[<span class="number">0</span>,<span class="number">25</span>,<span class="number">50</span>,<span class="number">75</span>,<span class="number">100</span>]) <span class="comment"># 计算百分位数</span></span><br><span class="line">IQR = Percentile[<span class="number">3</span>] - Percentile[<span class="number">1</span>] <span class="comment"># 计算箱线图IQR</span></span><br><span class="line">UpLimit = Percentile[<span class="number">3</span>] + IQR * <span class="number">1.5</span> <span class="comment"># 计算临界值上界</span></span><br><span class="line">arrayownLimit = Percentile[<span class="number">1</span>] - IQR * <span class="number">1.5</span> <span class="comment"># 计算临界值下界</span></span><br><span class="line"><span class="comment"># 判断异常值，大于上届或小于下界的值即为异常值为：</span></span><br><span class="line">abnormal = [i <span class="keyword">for</span> i <span class="keyword">in</span> arr <span class="keyword">if</span> i &gt; UpLimit <span class="keyword">or</span> i &lt; arrayownLimit]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;箱线图的IQR准则检测出的异常值为：\n&quot;</span>,abnormal)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;箱线图的IQR准则检测出的异常值比例为：\n&quot;</span>,<span class="built_in">len</span>(abnormal)/<span class="built_in">len</span>(arr))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915190827220.png" alt="image-20220915190827220"></p>
+<p><strong>利用3σ原则对异常值进行检测</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">array_mean = np.array(arr).mean() <span class="comment"># 计算平均值</span></span><br><span class="line">array_sarray = np.array(arr).std() <span class="comment"># 计算标准差</span></span><br><span class="line">array_cha = arr - array_mean <span class="comment"># 计算元素与平均值之差</span></span><br><span class="line"><span class="comment"># 返回异常值所在位置</span></span><br><span class="line">ind = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(array_cha)) <span class="keyword">if</span> np.<span class="built_in">abs</span>(array_cha[i])&gt;array_sarray] <span class="comment"># abs取绝对值</span></span><br><span class="line">abnormal = [arr[i] <span class="keyword">for</span> i <span class="keyword">in</span> ind] <span class="comment"># 返回异常值</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;3σ原则检测出的Array中的异常值为:\n&quot;</span>,abnormal)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;3σ原则检测出的异常值比例为：\n&quot;</span>,<span class="built_in">len</span>(abnormal)/<span class="built_in">len</span>(arr))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915190906881.png" alt="image-20220915190906881"></p>
+<h2 id="清洗数据"><a href="#清洗数据" class="headerlink" title="清洗数据"></a>清洗数据</h2><ul>
+<li>数据重复会导致数据的方差变小，数据分布发生较大变化。</li>
+<li>数据缺失会导致样本信息减少，不仅增加了数据分析的难度，而且会导致数据分析的结果产生偏差。</li>
+<li>异常值则会产生“伪回归”。</li>
+<li>因此需要对数据进行检测，观察数据种是否含有重复值、缺失值和异常值，并且需要对这些数据进行相应的处理。</li>
+</ul>
+<h3 id="重复值处理"><a href="#重复值处理" class="headerlink" title="重复值处理"></a>重复值处理</h3><h4 id="记录重复"><a href="#记录重复" class="headerlink" title="记录重复"></a>记录重复</h4><p>记录重复是指一个或多个特征的某条记录的值完全相同。可以通过列表（list）和集合（set）进行去重。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 利用列表（list)和集合（set）去重</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd </span><br><span class="line">data1 = pd.read_csv(<span class="string">&#x27;./data/销售流水记录1.csv&#x27;</span>,encoding=<span class="string">&#x27;gb18030&#x27;</span>)</span><br><span class="line"><span class="comment"># 使用列表（list）去重</span></span><br><span class="line"><span class="comment"># 定义去重函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delRep</span>(<span class="params">list1</span>):</span><br><span class="line">    list2 = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> list1:</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> list2:</span><br><span class="line">            list2.append(i)</span><br><span class="line">    <span class="keyword">return</span> list2</span><br><span class="line"><span class="comment"># 去重</span></span><br><span class="line">sku_names = <span class="built_in">list</span>(data1[<span class="string">&#x27;sku_name&#x27;</span>]) <span class="comment"># 将sku_name从数据库中提取出来</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;去重前商品总数为：&quot;</span>,<span class="built_in">len</span>(sku_names))</span><br><span class="line">sku_name = delRep(sku_names) <span class="comment"># 使用自定义的去重函数去重</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;使用列表（list）去重后的商品的总数为：&quot;</span>,<span class="built_in">len</span>(sku_name))</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p>去重前商品总数为： 611200<br>使用列表（list）去重后的商品的总数为： 10427</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用集合（set去重）</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;去重前商品总数为：&quot;</span>,<span class="built_in">len</span>(sku_names))</span><br><span class="line">sku_name_set = <span class="built_in">set</span>(sku_names)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;使用列表（list）去重后的商品的总数为：&quot;</span>,<span class="built_in">len</span>(sku_name_set))</span><br></pre></td></tr></table></figure>
+
+<p>运行结果:</p>
+<p>去重前商品总数为： 611200<br>使用列表（list）去重后的商品的总数为： 10427</p>
+<p><strong>注意：set去重速度快list去重许多倍</strong></p>
+<p>pandas提供了一个名为drop_duplicates()的去重方法。该方法只对DataFrame或Series类型有效。<strong>这种方法不会改变数据原始排列。且兼具代码简洁和运行稳定的特点</strong>，drop_duplicates()方法的基本使用格式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.DataFrame(Series).drop_duplicates(self, subset=<span class="literal">None</span>, keep=<span class="string">&#x27;first&#x27;</span>, inplace=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>subset</strong></td>
+<td>接收str或sequence，表示进行去重的列。默认为None，表示全部列</td>
+</tr>
+<tr>
+<td><strong>keep</strong></td>
+<td>接收特定str，表示重复时保留第几个数据。first：保留第一个；last：保留最后一个；false：只要有重复都不保留；默认为first</td>
+</tr>
+<tr>
+<td><strong>inplace</strong></td>
+<td>接收boolean,表示是否在原表上进行操作。默认为False</td>
+</tr>
+</tbody></table>
+<p><strong>使用drop_duplicates()方法对sku_name列进行去重操作</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sku_name_pandas = data1[<span class="string">&#x27;sku_name&#x27;</span>].drop_duplicates() <span class="comment"># 对sku_names去重</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;drop_duplicates()方法去重后的商品的总数为：&quot;</span>,<span class="built_in">len</span>(sku_name))</span><br><span class="line"><span class="comment"># drop_duplicates()方法去重后的商品的总数为： 10427</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>使用drop_duplicates()方法对多列进行去重操作</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;去重之前销售流水记录表的形状为：&#x27;</span>,data1.shape)</span><br><span class="line">shapeDet = data1.drop_duplicates(subset=[<span class="string">&#x27;order_id&#x27;</span>,<span class="string">&#x27;sku_id&#x27;</span>]).shape</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;依照订单编号，商品编号去重之后销售流水记录表大小为：&quot;</span>,shapeDet)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果为：</p>
+<p>去重之前销售流水记录表的形状为： (611200, 10)<br>依照订单编号，商品编号去重之后销售流水记录表大小为： (608176, 10)</p>
+<h4 id="特征重复"><a href="#特征重复" class="headerlink" title="特征重复"></a>特征重复</h4><p>特征重复是指存在一个或多个特征名称不同，但数据完全相同的情况。结合相关的数学和统计学知识，去除连续型特征重复可以利用特征间的相似度将两个相似度为1的特征去除一个。在pandas中相似度的计算方法为corr，使用该方法计算相似度时，默认为“pearson”法，可以通过“method”参数调节。目前，还支持“spearman”法和“kendall”法。</p>
+<p><strong>求出sku_prc和sku_sale_prc两列数据的相似度矩阵</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">corrDet = data1[[<span class="string">&#x27;sku_prc&#x27;</span>,<span class="string">&#x27;sku_sale_prc&#x27;</span>]].corr(method=<span class="string">&#x27;kendall&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;标价和卖价的kendall相似度为：\n&quot;</span>,corrDet)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915221431171.png" alt="image-20220915221431171"></p>
+<p><strong>求出sku_name、sku_prc和sku_sale_prc三个特征的相似度</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">corrDet1 = data1[[<span class="string">&#x27;sku_name&#x27;</span>,<span class="string">&#x27;sku_prc&#x27;</span>,<span class="string">&#x27;sku_sale_prc&#x27;</span>]].corr(method=<span class="string">&#x27;pearson&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;商品名称、标价和卖价的pearson相似度为：\n&quot;</span>,corrDet1)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915221508444.png" alt="image-20220915221508444"></p>
+<p><strong>通过相似矩阵去重存在一个弊端：只能对数值型重复特征进行去重；类别型特征之间无法通过计算相似系数衡量相似度，因此无法根据相似矩阵对其进行去重处理。由上述例子可知求三个特征相似度最终只存在2x2的相似度矩阵。</strong></p>
+<p><strong>使用DataFrame.equals()方法进行特征去重</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">FeatureEquals</span>(<span class="params">df</span>):</span><br><span class="line">    dfEquals = pd.DataFrame([],columns=df.columns,index=df.columns)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> df.columns:</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> df.columns:</span><br><span class="line">            dfEquals.loc[i,j] = df.loc[:,i].equals(df.loc[:,j])</span><br><span class="line">    <span class="keyword">return</span> dfEquals</span><br><span class="line"><span class="comment"># 应用上述函数</span></span><br><span class="line">detEquals = FeatureEquals(data1)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;data1的特征相等矩阵的前5行5列为：\n&quot;</span>,detEquals.iloc[:<span class="number">5</span>,:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915222249157.png" alt="image-20220915222249157"></p>
+<p><strong>通过遍历的方式进行数据筛选</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 遍历所有数据</span></span><br><span class="line">lenDet = detEquals.shape[<span class="number">0</span>]</span><br><span class="line"><span class="built_in">print</span>(detEquals.shape)</span><br><span class="line">dupCol = []</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(lenDet):</span><br><span class="line">    <span class="keyword">for</span> l <span class="keyword">in</span> <span class="built_in">range</span>(k+<span class="number">1</span>,lenDet):</span><br><span class="line">        <span class="keyword">if</span> detEquals.iloc[k,l]&amp;(detEquals.columns[l] <span class="keyword">not</span> <span class="keyword">in</span> dupCol):</span><br><span class="line">            dupCol.append(detEquals.columns[l])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行去重操作</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;需要删除的列为：&quot;</span>,dupCol)</span><br><span class="line">data1.drop(dupCol,axis=<span class="number">1</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;删除多余列后detail的特征数目为：&quot;</span>,data1.shape[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<p>运行结果:</p>
+<p>(10, 10)<br>需要删除的列为： []<br>删除多余列后detail的特征数目为： 10</p>
+<h3 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="缺失值处理"></a>缺失值处理</h3><h4 id="删除法"><a href="#删除法" class="headerlink" title="删除法"></a>删除法</h4><p>删除法是指将含有缺失值的特征或记录删除。删除法分为删除观测记录和删除特征两种，它属于利用减少样本量换取信息完整度的一种方法，是一种最简单的缺失值处理方法。pandas中提供了简便的删除缺失值的方法dropna()。该方法的基本使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.DataFrame.dropna(self, axis=<span class="number">0</span>, how=<span class="string">&#x27;any&#x27;</span>, thresh=<span class="literal">None</span>, subset=<span class="literal">None</span>, inplace=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>axis</strong></td>
+<td>接收0或1，表示轴向，0为删除观测记录（行），1为删除特征（列）。默认为0</td>
+</tr>
+<tr>
+<td><strong>how</strong></td>
+<td>接收特定str，表示删除的形式。any表示只要有缺失值存在就执行删除操作。all表示当且仅当全部为缺失值时执行删除操作。默认为any</td>
+</tr>
+<tr>
+<td><strong>subset</strong></td>
+<td>接收类array数据，表示进行去重的列∕行。默认为None，表示所有列∕行</td>
+</tr>
+<tr>
+<td><strong>inplace</strong></td>
+<td>接收boolean，表示是否在原表上进行操作。默认为False</td>
+</tr>
+</tbody></table>
+<p><strong>使用dropna()方法删除缺失值</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;去除含缺失值的列前detail的形状为：&quot;</span>,data1.shape)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;去除含缺失值的列后detail的形状为：&quot;</span>,data1.dropna(axis=<span class="number">1</span>,how=<span class="string">&#x27;any&#x27;</span>).shape)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p>去除含缺失值的列前detail的形状为： (611200, 10)<br>去除含缺失值的列后detail的形状为： (611200, 9)</p>
+<p>当how参数取值为’any’时，删除了一个特征，说明这个特征存在缺失值。若how参数不取‘any’，而取‘all’，则表示当整个特征全部为缺失值时才会执行删除操作。</p>
+<h4 id="替换法"><a href="#替换法" class="headerlink" title="替换法"></a>替换法</h4><p>是指用一个特定的值替换缺失值。特征可分为数值型和类别型，两者出现缺失值时的处理方法也是不同的。缺失值所在特征为数值型时，通常利用其均值、中位数和众数等描述其集中趋势的统计量代替缺失值；缺失值所在特征为类别型时，则选择使用众数替换缺失值。pandas库中提供了缺失值替换的方法名为fillna()，其基本使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.DataFrame.fillna(value=<span class="literal">None</span>, method=<span class="literal">None</span>, axis=<span class="literal">None</span>, inplace=<span class="literal">False</span>, limit=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>value</strong></td>
+<td>接收scalar、dict、Series或DataFrame，表示用于替换缺失值的值。无默认值</td>
+</tr>
+<tr>
+<td><strong>method</strong></td>
+<td>接收特定str，backfill或bfill表示使用下一个非缺失值填补缺失值；pad或ffill表示使用上一个非缺失值填补缺失值。默认为None</td>
+</tr>
+<tr>
+<td><strong>axis</strong></td>
+<td>接收0或1，表示轴向。默认为1</td>
+</tr>
+<tr>
+<td><strong>inplace</strong></td>
+<td>接收boolean，表示是否在原表上进行操作。默认为False</td>
+</tr>
+<tr>
+<td><strong>limit</strong></td>
+<td>接收int，表示填补缺失值个数上限，超过则不进行填补。默认为None</td>
+</tr>
+</tbody></table>
+<p><strong>使用fillna()方法替换缺失值</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;data1每个特征缺失的数目为：\n&quot;</span>,data1.isnull().<span class="built_in">sum</span>())</span><br><span class="line">data1 = data1.fillna(method=<span class="string">&#x27;pad&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;data1每个特征缺失的数目为：\n&quot;</span>,data1.isnull().<span class="built_in">sum</span>())</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915223649178.png" alt="image-20220915223649178"></p>
+<h4 id="插值法"><a href="#插值法" class="headerlink" title="插值法"></a>插值法</h4><ul>
+<li>删除法简单易行，但是会引起数据结构变动，样本减少；</li>
+<li>替换法使用难度较低，但是会影响数据的标准差，导致信息量变动。</li>
+<li>在面对数据缺失问题时，除了这两种方法之外，还有一种常用的方法——插值法。</li>
+</ul>
+<p>常用的插值法有线性插值、多项式插值和样条插值等。</p>
+<ul>
+<li>线性插值是一种较为简单的插值方法，它针对已知的值求出线性方程，通过求解线性方程得到缺失值；</li>
+<li>多项式插值是利用已知的值拟合一个多项式，使得现有的数据满足这个多项式，再利用这个多项式求解缺失值，常见的多项式插值法有拉格朗日插值和牛顿插值等；</li>
+<li>样条插值是以可变样条作出一条经过一系列点的光滑曲线的插值方法，插值样条由一些多项式组成，每一个多项式都是由相邻两个数据点决定，这样可以保证两个相邻多项式及其导数在连接处连续。</li>
+</ul>
+<p>pandas提供了对应的名为interpolate的插值方法，能够进行上述部分插值操作，但是SciPy的interpolate模块更加全面。</p>
+<p><strong>线性插值</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.interpolate <span class="keyword">import</span> interp1d</span><br><span class="line">x = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>])  <span class="comment"># 创建自变量x</span></span><br><span class="line">y1 = np.array([<span class="number">3</span>, <span class="number">17</span>, <span class="number">129</span>, <span class="number">251</span>, <span class="number">433</span>, <span class="number">1025</span>, <span class="number">2001</span>])  <span class="comment"># 创建因变量y1</span></span><br><span class="line">y2 = np.array([<span class="number">5</span>, <span class="number">8</span>, <span class="number">14</span>, <span class="number">17</span>, <span class="number">20</span>, <span class="number">26</span>, <span class="number">32</span>])  <span class="comment"># 创建因变量y2</span></span><br><span class="line">LinearInsValue1 = interp1d(x, y1, kind=<span class="string">&#x27;linear&#x27;</span>)  <span class="comment"># 线性插值拟合x, y1</span></span><br><span class="line">LinearInsValue2 = interp1d(x, y2, kind=<span class="string">&#x27;linear&#x27;</span>)  <span class="comment"># 线性插值拟合x, y2</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;当x为3、7、9时，使用线性插值y1为：&#x27;</span>, LinearInsValue1([<span class="number">3</span>, <span class="number">7</span>, <span class="number">9</span>]))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;当x为3、7、9时，使用线性插值y2为：&#x27;</span>, LinearInsValue2([<span class="number">3</span>, <span class="number">7</span>, <span class="number">9</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p>当x为3、7、9时，使用线性插值y1为： [  73.  729. 1513.]<br>当x为3、7、9时，使用线性插值y2为： [11. 23. 29.]</p>
+<p><strong>拉格朗日插值</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.interpolate <span class="keyword">import</span> lagrange</span><br><span class="line">LargeInsValue1 = lagrange(x, y1)  <span class="comment"># 拉格朗日插值拟合x, y1</span></span><br><span class="line">LargeInsValue2 = lagrange(x, y2)  <span class="comment"># 拉格朗日插值拟合x, y2</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;当x为3、7、9时，使用拉格朗日插值y1为：&#x27;</span>, LargeInsValue1([<span class="number">3</span>, <span class="number">7</span>, <span class="number">9</span>]))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;当x为3、7、9时，使用拉格朗日插值y2为：&#x27;</span>, LargeInsValue2([<span class="number">3</span>, <span class="number">7</span>, <span class="number">9</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>运行结果:</p>
+<p>当x为3、7、9时，使用拉格朗日插值y1为： [  55.  687. 1459.]<br>当x为3、7、9时，使用拉格朗日插值y2为： [11. 23. 29.]</p>
+<p><strong>样条插值</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.interpolate <span class="keyword">import</span> splrep, splev</span><br><span class="line">tck1 = splrep(x, y1)</span><br><span class="line">x_new = np.array([<span class="number">3</span>, <span class="number">7</span>, <span class="number">9</span>])</span><br><span class="line">SplineInsValue1 = splev(x_new, tck1)  <span class="comment"># 样条插值拟合x, y1</span></span><br><span class="line">tck2 = splrep(x, y2)</span><br><span class="line">SplineInsValue2 = splev(x_new, tck2)  <span class="comment"># 样条插值拟合x, y2</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;当x为3、7、9时，使用样条插值y1为：&#x27;</span>, SplineInsValue1)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;当x为3、7、9时，使用样条插值y2为：&#x27;</span>, SplineInsValue2)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p>当x为3、7、9时，使用样条插值y1为： [  55.  687. 1459.]<br>当x为3、7、9时，使用样条插值y2为： [11. 23. 29.]</p>
+<p>其中有：</p>
+<p>$$<br>y_1&#x3D;2x^{3}+1<br>$$</p>
+<p>$$<br>y_2&#x3D;3x+2<br>$$</p>
+<h3 id="异常值处理"><a href="#异常值处理" class="headerlink" title="异常值处理"></a>异常值处理</h3><p>异常值的存在对数据分析十分危险，如果计算分析过程的数据有异常值，那么会对结果会产生不良影响，从而导致分析结果产生偏差乃至错误。异常值的处理通常有4种方式：</p>
+<ul>
+<li><p>删除含有异常值的记录；</p>
+</li>
+<li><p>将异常值视为缺失值，按缺失值的处理方式进行处理；</p>
+</li>
+<li><p>用平均值修正异常值；</p>
+</li>
+<li><p>某些情况下，异常值恰恰体现了非常重要的信息，这时，可以不处理，保留异常值。</p>
+</li>
+</ul>
+<h2 id="合并数据"><a href="#合并数据" class="headerlink" title="合并数据"></a>合并数据</h2><ul>
+<li>数据可视化的实际开发中，数据种类比较繁多，并频繁出现用不同的表存储不同类型的数据，但表和表之间又有联系；</li>
+<li>当数据量大时，将会使用不同的表收集不同时段的数据，这样随着数据量的增加，表的数量也会增加。</li>
+<li>如果将有关联的数据整合在一张表中，那么在对数据进行可视化和分析工作时，将会大大提高工作效率。</li>
+<li>合并数据的方法可分为堆叠合并、主键合并和重叠合并。</li>
+</ul>
+<h3 id="堆叠合并数据"><a href="#堆叠合并数据" class="headerlink" title="堆叠合并数据"></a>堆叠合并数据</h3><p>堆叠就是简单地将两个表拼在一起，也被称作轴向连接、绑定或连接。依照连接轴的方向，数据堆叠可分为横向堆叠和纵向堆叠。</p>
+<h4 id="横向堆叠"><a href="#横向堆叠" class="headerlink" title="横向堆叠"></a>横向堆叠</h4><p>横向堆叠，即将两个表在X轴向拼接在一起，可以使用concat函数完成。concat函数的基本使用格式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pandas.concat(objs, axis=<span class="number">0</span>, join=<span class="string">&#x27;outer&#x27;</span>, join_axes=<span class="literal">None</span>, ignore_index=<span class="literal">False</span>, keys=<span class="literal">None</span>, levels=<span class="literal">None</span>, names=<span class="literal">None</span>,    </span><br><span class="line">verify_integrity=<span class="literal">False</span>, copy=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>objs</strong></td>
+<td>接收多个Series、DataFrame、Panel的组合，表示参与链接的pandas对象的列表的组合。无默认值</td>
+</tr>
+<tr>
+<td><strong>axis</strong></td>
+<td>接收0或1，表示连接的轴向。默认为0</td>
+</tr>
+<tr>
+<td><strong>join</strong></td>
+<td>接收inner或outer，表示其他轴向上的索引是按交集（inner）还是并集（outer）进行合并。默认为outer</td>
+</tr>
+<tr>
+<td><strong>join_axes</strong></td>
+<td>接收Index对象，表示用于其他n-1条轴的索引，不执行并集／交集运算</td>
+</tr>
+<tr>
+<td><strong>ignore_index</strong></td>
+<td>接收boolean，表示是否不保留连接轴上的索引，产生一组新索引range(total_length)。默认为False</td>
+</tr>
+<tr>
+<td><strong>keys</strong></td>
+<td>接收sequence，表示与连接对象有关的值，用于形成连接轴向上的层次化索引。默认为None</td>
+</tr>
+<tr>
+<td><strong>levels</strong></td>
+<td>接收包含多个sequence的list，表示在指定keys参数后，指定用作层次化索引各级别上的索引。默认为None</td>
+</tr>
+<tr>
+<td><strong>names</strong></td>
+<td>接收list，表示在设置了keys和levels参数后，用于创建分层级别的名称。默认为None</td>
+</tr>
+<tr>
+<td><strong>verify_integrity</strong></td>
+<td>接收boolearn，表示是否检查结果对象新轴上的重复情况，如果发现则引发异常。默认为False</td>
+</tr>
+</tbody></table>
+<p><strong>当axis&#x3D;1时，concat做行对齐</strong>，然后将不同列名称的两张或多张表合并。当两个表索引不完全一样时，可以使用join参数选择是内连接还是外连接。在内连接的情况下，仅仅返回索引重叠部分。在外连接的情况下，则显示索引的并集部分数据，不足的地方则使用空值填补，其原理示意如图所示。</p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915182542295.png" alt="image-20220915182542295"></p>
+<p><strong>索引完全相同时使用concat函数进行横向堆叠</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="comment"># 创建数据</span></span><br><span class="line">data1 = pd.DataFrame(&#123;</span><br><span class="line">    <span class="string">&#x27;A&#x27;</span>: [<span class="string">&#x27;A1&#x27;</span>, <span class="string">&#x27;A2&#x27;</span>, <span class="string">&#x27;A3&#x27;</span>, <span class="string">&#x27;A4&#x27;</span>], <span class="string">&#x27;B&#x27;</span>: [<span class="string">&#x27;B1&#x27;</span>, <span class="string">&#x27;B2&#x27;</span>, <span class="string">&#x27;B3&#x27;</span>, <span class="string">&#x27;B4&#x27;</span>], <span class="string">&#x27;C&#x27;</span>: [<span class="string">&#x27;C1&#x27;</span>, <span class="string">&#x27;C2&#x27;</span>,<span class="string">&#x27;C3&#x27;</span>, <span class="string">&#x27;C4&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;D&#x27;</span>: [<span class="string">&#x27;D1&#x27;</span>, <span class="string">&#x27;D2&#x27;</span>, <span class="string">&#x27;D3&#x27;</span>, <span class="string">&#x27;D4&#x27;</span>]&#125;, index=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line">data2 = pd.DataFrame(&#123;</span><br><span class="line">    <span class="string">&#x27;B&#x27;</span>: [<span class="string">&#x27;B2&#x27;</span>, <span class="string">&#x27;B4&#x27;</span>, <span class="string">&#x27;B6&#x27;</span>, <span class="string">&#x27;B8&#x27;</span>], <span class="string">&#x27;D&#x27;</span>: [<span class="string">&#x27;D2&#x27;</span>, <span class="string">&#x27;D4&#x27;</span>, <span class="string">&#x27;D6&#x27;</span>, <span class="string">&#x27;D8&#x27;</span>], <span class="string">&#x27;F&#x27;</span>: [<span class="string">&#x27;F2&#x27;</span>, <span class="string">&#x27;F4&#x27;</span>,<span class="string">&#x27;F6&#x27;</span>, <span class="string">&#x27;F8&#x27;</span>]&#125;,</span><br><span class="line">    index=[<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;内连接合并后的数据框为：\n&#x27;</span>, pd.concat([data1, data2], axis=<span class="number">1</span>, join=<span class="string">&#x27;inner&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;外连接合并后的数据框为：\n&#x27;</span>, pd.concat([data1, data2], axis=<span class="number">1</span>, join=<span class="string">&#x27;outer&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915224902326.png" alt="image-20220915224902326"></p>
+<h4 id="纵向堆叠"><a href="#纵向堆叠" class="headerlink" title="纵向堆叠"></a>纵向堆叠</h4><p>对比横向堆叠，纵向堆叠是将两个数据表在Y轴向上拼接。append()方法和concat函数两者都可以实现纵向堆叠。</p>
+<p>append()方法用于纵向合并两张表。但是append()方法实现纵向表堆叠有一个前提条件，那就是两张表的列名需要完全一致。append()方法的基本使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.DataFrame.append(self, other, ignore_index=<span class="literal">False</span>, verify_integrity=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>other</strong></td>
+<td>接收DataFrame或Series，表示要添加的新数据。无默认值</td>
+</tr>
+<tr>
+<td><strong>ignore_index</strong></td>
+<td>接收boolean。如果输入True，会对新生成的DataFrame使用新的索引（自动产生）而忽略原来数据的索引。默认为False</td>
+</tr>
+<tr>
+<td><strong>verify_integrity</strong></td>
+<td>接收boolean。如果输入True，那么当ignore_index为False时，会检查添加的数据索引是否冲突，如果冲突，则会添加失败。默认为False</td>
+</tr>
+</tbody></table>
+<p><strong>使用concat函数时，在默认情况下，即axis&#x3D;0时，concat做列对齐</strong>，将不同行索引的两张或多张表纵向合并。在两张表的列名并不完全相同的情况下，可join参数取值为inner时，返回的仅仅是列名交集所代表的列，取值为outer时，返回的是两者列名的并集所代表的列，其原理示意如图所示。</p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915182718546.png" alt="image-20220915182718546"></p>
+<p><strong>表名完全相同时使用concat函数进行纵向堆叠</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;内连接纵向合并后的数据框为：\n&#x27;</span>, pd.concat([data1, data2], axis=<span class="number">0</span>, join=<span class="string">&#x27;inner&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;外连接纵向合并后的数据框为：\n&#x27;</span>, pd.concat([data1, data2], axis=<span class="number">0</span>, join=<span class="string">&#x27;outer&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915225047064.png" alt="image-20220915225047064"></p>
+<p><strong>使用append()方法进行纵向表堆叠</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">data1 = pd.read_csv(<span class="string">&#x27;./data/销售流水记录1.csv&#x27;</span>, encoding=<span class="string">&#x27;gb18030&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;堆叠前data1数据框的大小：&#x27;</span>, data1.shape)</span><br><span class="line">data2 = pd.read_csv(<span class="string">&#x27;./data/销售流水记录2.csv&#x27;</span>, encoding=<span class="string">&#x27;gb18030&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;堆叠前data2数据框的大小：&#x27;</span>, data2.shape)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;append纵向堆叠后的数据框大小为：&#x27;</span>, data1.append(data2).shape)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果:</p>
+<p>堆叠前data1数据框的大小： (611200, 10)<br>堆叠前data2数据框的大小： (610655, 10)<br>append纵向堆叠后的数据框大小为： (1221855, 10)</p>
+<h3 id="主键合并"><a href="#主键合并" class="headerlink" title="主键合并"></a>主键合并</h3><p>主键合并，即通过一个或多个键将两个数据集的行连接起来，类似于SQL中的join。针对同一个主键存在两张包含不同字段的表，将其根据某几个字段一一对应拼接起来，结果集列数为两个元数据的列数和减去连接键的数量，如图所示。</p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915182745828.png" alt="image-20220915182745828"></p>
+<p>pandas库中的merge函数和join()方法都可以实现主键合并，但两者的实现方式并不相同。</p>
+<p>merge函数的基本使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.merge(left, right, how=<span class="string">&#x27;inner&#x27;</span>, on=<span class="literal">None</span>, left_on=<span class="literal">None</span>, right_on=<span class="literal">None</span>, left_index=<span class="literal">False</span>, right_index=<span class="literal">False</span>, sort=<span class="literal">False</span>, suffixes=(<span class="string">&#x27;_x&#x27;</span>, <span class="string">&#x27;_y&#x27;</span>), copy=<span class="literal">True</span>, indicator=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>和数据库的join一样，merge函数也有左连接（left）、右连接（right）、内连接（inner）和外连接（outer），但比起数据库SQL语言中的join和merge函数还有其自身独到之处，如可以在合并过程中对数据集中的数据进行排序等。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>left</strong></td>
+<td>接收DataFrame或Series，表示要添加的新数据。无默认值</td>
+</tr>
+<tr>
+<td><strong>right</strong></td>
+<td>接收DataFrame或Series，表示要添加的新数据。无默认值</td>
+</tr>
+<tr>
+<td><strong>how</strong></td>
+<td>接收inner、outer、left、right，表示数据的连接方式。默认为inner</td>
+</tr>
+<tr>
+<td><strong>on</strong></td>
+<td>接收str或sequence，表示两个数据合并的主键（必须一致）。默认为None</td>
+</tr>
+<tr>
+<td><strong>left_on</strong></td>
+<td>接收str或sequence，表示left参数接收数据用于合并的主键。默认为None</td>
+</tr>
+<tr>
+<td><strong>right_on</strong></td>
+<td>接收str或sequence，表示right参数接收数据用于合并的主键。默认为None</td>
+</tr>
+<tr>
+<td><strong>left_index</strong></td>
+<td>接收boolean，表示是否将left参数接收数据的index作为连接主键。默认为False</td>
+</tr>
+<tr>
+<td><strong>right_index</strong></td>
+<td>接收boolean，表示是否将right参数接收数据的index作为连接主键。默认为False</td>
+</tr>
+<tr>
+<td><strong>sort</strong></td>
+<td>接收boolean，表示是否根据连接键对合并后的数据进行排序。默认为False</td>
+</tr>
+<tr>
+<td><strong>suffixes</strong></td>
+<td>接收接收tuple，表示用于追加到left和right参数接收数据重叠列名的尾缀默认为(‘_x’,  ‘_y’)</td>
+</tr>
+</tbody></table>
+<p><strong>使用merge函数合并数据</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">data1 = pd.read_csv(<span class="string">&#x27;./data/销售流水记录1.csv&#x27;</span>, encoding=<span class="string">&#x27;gb18030&#x27;</span>, low_memory=<span class="literal">False</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;销售流水记录表的原始形状为：&#x27;</span>, data1.shape)</span><br><span class="line">goods_info = pd.read_excel(<span class="string">&#x27;./data/商品信息表.xlsx&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;商品信息表的原始形状为：&#x27;</span>, goods_info.shape)</span><br><span class="line">sale_detail = pd.merge(data1, goods_info, on=<span class="string">&#x27;sku_id&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;销售流水记录表和商品信息表主键合并后的形状为：&#x27;</span>, sale_detail.shape)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果:</p>
+<p>销售流水记录表的原始形状为： (611200, 10)<br>商品信息表的原始形状为： (6570, 8)<br>销售流水记录表和商品信息表主键合并后的形状为： (611111, 17)</p>
+<p>主键合并除了使用merge函数以外，join()方法也可以实现部分主键合并的功能，但是join()方法使用时，两个主键的名字必须相同，其基本使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.DataFrame.join(self, other, on=<span class="literal">None</span>, how=<span class="string">&#x27;left&#x27;</span>, lsuffix=<span class="string">&#x27;&#x27;</span>, rsuffix=<span class="string">&#x27;&#x27;</span>, sort=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>left</strong></td>
+<td>接收DataFrame或Series，表示要添加的新数据。无默认值</td>
+</tr>
+<tr>
+<td><strong>other</strong></td>
+<td>接收DataFrame、Series或包含了多个DataFrame的list，表示参与连接的其他DataFrame。无默认值</td>
+</tr>
+<tr>
+<td><strong>on</strong></td>
+<td>接收列名或包含列名的list或tuple，表示用于连接的列名。默认为None</td>
+</tr>
+<tr>
+<td><strong>how</strong></td>
+<td>接收特定str。inner代表内连接；outer代表外连接；left和right分别代表左连接和右连接。默认为inner</td>
+</tr>
+<tr>
+<td><strong>lsuffix</strong></td>
+<td>接收str，表示用于追加到左侧重叠列名的末尾。无默认值</td>
+</tr>
+<tr>
+<td><strong>rsuffix</strong></td>
+<td>接收str，表示用于追加到右侧重叠列名的末尾。无默认值</td>
+</tr>
+<tr>
+<td><strong>sort</strong></td>
+<td>根据连接键对合并后的数据进行排序，默认为True</td>
+</tr>
+</tbody></table>
+<p><strong>使用join()方法实现主键合并</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sale_detail2 = data1.join(goods_info, on=<span class="string">&#x27;sku_id&#x27;</span>, rsuffix=<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;销售流水记录表和商品信息表join合并后的形状为：&#x27;</span>, sale_detail2.shape)</span><br><span class="line"><span class="comment"># 销售流水记录表和商品信息表join合并后的形状为： (611200, 18)</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="重叠合并数据"><a href="#重叠合并数据" class="headerlink" title="重叠合并数据"></a>重叠合并数据</h3><p>数据分析和处理过程中偶尔会出现两份数据的内容几乎一致的情况，但是某些特征在其中一张表上是完整的，而在另外一张表上的数据则是缺失的。这时除了将数据一对一比较，然后进行填充的方法外，还有一种方法就是重叠合并。pandas库提供了combine_first()方法进行重叠数据合并，其原理如图所示</p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915183007697.png" alt="image-20220915183007697"></p>
+<p>combine_first()方法的基本使用格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.DataFrame.combine_first(other)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>other</strong></td>
+<td>接收DataFrame，表示参与重叠合并的另一个DataFrame。无默认值</td>
+</tr>
+</tbody></table>
+<p><strong>重叠合并</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="comment"># 生成两个数据框</span></span><br><span class="line">df1 = pd.DataFrame(&#123;<span class="string">&#x27;a&#x27;</span>: [<span class="number">2.</span>, np.nan, <span class="number">1.</span>, np.nan], <span class="string">&#x27;b&#x27;</span>: [np.nan, <span class="number">6.</span>, np.nan, <span class="number">8.</span>],</span><br><span class="line"><span class="string">&#x27;c&#x27;</span>: <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">8</span>, <span class="number">2</span>)&#125;)</span><br><span class="line">df2 = pd.DataFrame(&#123;<span class="string">&#x27;a&#x27;</span>: [<span class="number">6.</span>, <span class="number">2.</span>, np.nan, <span class="number">1.</span>, <span class="number">8.</span>], <span class="string">&#x27;b&#x27;</span>: [np.nan, <span class="number">2.</span>, <span class="number">5.</span>, <span class="number">8.</span>, <span class="number">9.</span>]&#125;)</span><br><span class="line"><span class="comment"># 采取不同的方式</span></span><br><span class="line"><span class="built_in">print</span>(df1)</span><br><span class="line"><span class="built_in">print</span>(df2)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\ndf1.combine_first(df2)的结果：\n&#x27;</span>, df1.combine_first(df2))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\ndf2.combine_first(df1)的结果：\n&#x27;</span>, df2.combine_first(df1))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220915225926424.png" alt="image-20220915225926424"></p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>本章主要以销售流水记录表数据为例子，实现了读取数据、处理不符合可视化要求的数据，即校验数据、清洗数据、合并数据等内容。</p>
+<ul>
+<li><strong>读取数据</strong>，主要介绍了借助Pandas库，读取csv，Excel，mysql三种常见的数据文件。</li>
+<li><strong>校验数据，</strong>主要介绍了一致性检验、缺失值检验以及异常值的检验。</li>
+<li><strong>清洗数据，</strong>主要介绍了重复值、缺失值以及异常值的常见处理方式。</li>
+<li><strong>合并数据，</strong>主要介绍了堆叠合并数据、主键合并数据以及重叠合并数据。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://yuwan-codediary.github.io">Zhang Yuhua</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://yuwan-codediary.github.io/2022/09/16/%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9A%84%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/">https://yuwan-codediary.github.io/2022/09/16/%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9A%84%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://yuwan-codediary.github.io" target="_blank">share station</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/09/18/seaborn%E7%BB%98%E5%9B%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><img class="prev-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">seaborn绘图学习笔记</div></div></a></div><div class="next-post pull-right"><a href="/2022/09/14/pyecharts%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">pyecharts学习笔记</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs头像.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Zhang Yuhua</div><div class="author-info__description">一个啥也不会的人工智能专业的大学生的学习笔记记录网站罢了</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">1.</span> <span class="toc-text">读取数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96CSV%E6%96%87%E4%BB%B6%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.</span> <span class="toc-text">读取CSV文件数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#csv%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="toc-number">1.1.1.</span> <span class="toc-text">csv文件读取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#csv%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8"><span class="toc-number">1.1.2.</span> <span class="toc-text">csv文件存储</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96Excel%E6%96%87%E4%BB%B6%E6%95%B0%E6%8D%AE"><span class="toc-number">1.2.</span> <span class="toc-text">读取Excel文件数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#excel%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="toc-number">1.2.1.</span> <span class="toc-text">excel文件读取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#excel%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text">excel文件存储</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE"><span class="toc-number">1.3.</span> <span class="toc-text">读取数据库数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96"><span class="toc-number">1.3.1.</span> <span class="toc-text">数据库数据读取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">数据存储</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE"><span class="toc-number">2.</span> <span class="toc-text">处理数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A3%80%E9%AA%8C%E6%95%B0%E6%8D%AE"><span class="toc-number">2.1.</span> <span class="toc-text">检验数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7%E6%A3%80%E9%AA%8C"><span class="toc-number">2.1.1.</span> <span class="toc-text">一致性检验</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E6%A3%80%E9%AA%8C"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">时间检验</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E4%BF%A1%E6%81%AF%E6%A0%A1%E9%AA%8C"><span class="toc-number">2.1.1.2.</span> <span class="toc-text">字段信息校验</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E5%A4%B1%E5%80%BC%E6%A3%80%E9%AA%8C"><span class="toc-number">2.1.2.</span> <span class="toc-text">缺失值检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E9%AA%8C"><span class="toc-number">2.1.3.</span> <span class="toc-text">异常值检验</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%85%E6%B4%97%E6%95%B0%E6%8D%AE"><span class="toc-number">2.2.</span> <span class="toc-text">清洗数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%A4%8D%E5%80%BC%E5%A4%84%E7%90%86"><span class="toc-number">2.2.1.</span> <span class="toc-text">重复值处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%B0%E5%BD%95%E9%87%8D%E5%A4%8D"><span class="toc-number">2.2.1.1.</span> <span class="toc-text">记录重复</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E9%87%8D%E5%A4%8D"><span class="toc-number">2.2.1.2.</span> <span class="toc-text">特征重复</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E5%A4%B1%E5%80%BC%E5%A4%84%E7%90%86"><span class="toc-number">2.2.2.</span> <span class="toc-text">缺失值处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%B3%95"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">删除法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%BF%E6%8D%A2%E6%B3%95"><span class="toc-number">2.2.2.2.</span> <span class="toc-text">替换法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%80%BC%E6%B3%95"><span class="toc-number">2.2.2.3.</span> <span class="toc-text">插值法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%80%BC%E5%A4%84%E7%90%86"><span class="toc-number">2.2.3.</span> <span class="toc-text">异常值处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E6%95%B0%E6%8D%AE"><span class="toc-number">2.3.</span> <span class="toc-text">合并数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E5%8F%A0%E5%90%88%E5%B9%B6%E6%95%B0%E6%8D%AE"><span class="toc-number">2.3.1.</span> <span class="toc-text">堆叠合并数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%AA%E5%90%91%E5%A0%86%E5%8F%A0"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">横向堆叠</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%B5%E5%90%91%E5%A0%86%E5%8F%A0"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">纵向堆叠</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E5%90%88%E5%B9%B6"><span class="toc-number">2.3.2.</span> <span class="toc-text">主键合并</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%8F%A0%E5%90%88%E5%B9%B6%E6%95%B0%E6%8D%AE"><span class="toc-number">2.3.3.</span> <span class="toc-text">重叠合并数据</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">小结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/09/18/seaborn%E7%BB%98%E5%9B%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="seaborn绘图学习笔记"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="seaborn绘图学习笔记"/></a><div class="content"><a class="title" href="/2022/09/18/seaborn%E7%BB%98%E5%9B%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="seaborn绘图学习笔记">seaborn绘图学习笔记</a><time datetime="2022-09-18T10:24:49.000Z" title="发表于 2022-09-18 18:24:49">2022-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/16/%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9A%84%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/" title="用于数据可视化的数据预处理"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用于数据可视化的数据预处理"/></a><div class="content"><a class="title" href="/2022/09/16/%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9A%84%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/" title="用于数据可视化的数据预处理">用于数据可视化的数据预处理</a><time datetime="2022-09-16T08:11:33.000Z" title="发表于 2022-09-16 16:11:33">2022-09-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/14/pyecharts%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="pyecharts学习笔记"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="pyecharts学习笔记"/></a><div class="content"><a class="title" href="/2022/09/14/pyecharts%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="pyecharts学习笔记">pyecharts学习笔记</a><time datetime="2022-09-14T08:43:23.000Z" title="发表于 2022-09-14 16:43:23">2022-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/14/matplolib%E5%AD%A6%E4%B9%A0/" title="matplolib学习笔记"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="matplolib学习笔记"/></a><div class="content"><a class="title" href="/2022/09/14/matplolib%E5%AD%A6%E4%B9%A0/" title="matplolib学习笔记">matplolib学习笔记</a><time datetime="2022-09-14T02:32:07.000Z" title="发表于 2022-09-14 10:32:07">2022-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/13/numpy%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="numpy常用命令"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="numpy常用命令"/></a><div class="content"><a class="title" href="/2022/09/13/numpy%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="numpy常用命令">numpy常用命令</a><time datetime="2022-09-13T09:32:37.000Z" title="发表于 2022-09-13 17:32:37">2022-09-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Zhang Yuhua</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

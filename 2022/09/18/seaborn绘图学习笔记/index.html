@@ -1,0 +1,1347 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>seaborn绘图学习笔记 | share station</title><meta name="keywords" content="鱼丸的学习笔记"><meta name="author" content="Zhang Yuhua"><meta name="copyright" content="Zhang Yuhua"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="熟悉seaborn的绘图基础了解seaborn中的基础图形 seaborn库绘制的图形色彩、视觉令人耳目一新，通常将它视为Matplotlib库的补充，而不是替代物。seaborn库绘制的常用图形有散点图、折线图、热力图、条形图、箱线图、网格图等，在绘制这些图形之前需要掌握seaborn库的绘图基础，其中包括基础图形、绘图风格和调色板等。 在seaborn库中包含了大量常用的基础图形。以某企业人员">
+<meta property="og:type" content="article">
+<meta property="og:title" content="seaborn绘图学习笔记">
+<meta property="og:url" content="https://yuwan-codediary.github.io/2022/09/18/seaborn%E7%BB%98%E5%9B%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="share station">
+<meta property="og:description" content="熟悉seaborn的绘图基础了解seaborn中的基础图形 seaborn库绘制的图形色彩、视觉令人耳目一新，通常将它视为Matplotlib库的补充，而不是替代物。seaborn库绘制的常用图形有散点图、折线图、热力图、条形图、箱线图、网格图等，在绘制这些图形之前需要掌握seaborn库的绘图基础，其中包括基础图形、绘图风格和调色板等。 在seaborn库中包含了大量常用的基础图形。以某企业人员">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-18T10:24:49.000Z">
+<meta property="article:modified_time" content="2022-09-18T10:25:16.580Z">
+<meta property="article:author" content="Zhang Yuhua">
+<meta property="article:tag" content="鱼丸的学习笔记">
+<meta name="twitter:card" content="summary"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://yuwan-codediary.github.io/2022/09/18/seaborn%E7%BB%98%E5%9B%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: [object Object]
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'seaborn绘图学习笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-09-18 18:25:16'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs头像.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">share station</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">seaborn绘图学习笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-18T10:24:49.000Z" title="发表于 2022-09-18 18:24:49">2022-09-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-09-18T10:25:16.580Z" title="更新于 2022-09-18 18:25:16">2022-09-18</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="seaborn绘图学习笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="熟悉seaborn的绘图基础"><a href="#熟悉seaborn的绘图基础" class="headerlink" title="熟悉seaborn的绘图基础"></a>熟悉seaborn的绘图基础</h1><h2 id="了解seaborn中的基础图形"><a href="#了解seaborn中的基础图形" class="headerlink" title="了解seaborn中的基础图形"></a>了解seaborn中的基础图形</h2><ul>
+<li>seaborn库绘制的图形色彩、视觉令人耳目一新，通常将它视为Matplotlib库的补充，而不是替代物。seaborn库绘制的常用图形有散点图、折线图、热力图、条形图、箱线图、网格图等，在绘制这些图形之前需要掌握seaborn库的绘图基础，其中包括基础图形、绘图风格和调色板等。</li>
+<li>在seaborn库中包含了大量常用的基础图形。以某企业人员离职率数据为例，分别使用Matplotlib库与seaborn库绘图不同薪资分布的散点图。</li>
+</ul>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917180925172.png" alt="image-20220917180925172"></p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917180930668.png" alt="image-20220917180930668"></p>
+<p><strong>不同薪资分布的散点图</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置中文字体</span></span><br><span class="line">plt.rcParams[<span class="string">&#x27;font.sans-serif&#x27;</span>] = [<span class="string">&#x27;SimHei&#x27;</span>]</span><br><span class="line">sns.set_style(&#123;<span class="string">&#x27;font.sans-serif&#x27;</span>:[<span class="string">&#x27;simhei&#x27;</span>, <span class="string">&#x27;Arial&#x27;</span>]&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">hr = pd.read_csv(<span class="string">&#x27;./data/hr.csv&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line">data = hr.head(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">color_map = <span class="built_in">dict</span>(<span class="built_in">zip</span>(data[<span class="string">&#x27;薪资&#x27;</span>].unique(), [<span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;r&#x27;</span>]))</span><br><span class="line"><span class="keyword">for</span> species, group <span class="keyword">in</span> data.groupby(<span class="string">&#x27;薪资&#x27;</span>):</span><br><span class="line">    plt.scatter(group[<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>],</span><br><span class="line">                group[<span class="string">&#x27;满意度&#x27;</span>],</span><br><span class="line">                color=color_map[species], alpha=<span class="number">0.4</span>,</span><br><span class="line">                edgecolors=<span class="literal">None</span>, label=species)</span><br><span class="line">plt.legend(frameon=<span class="literal">True</span>, title=<span class="string">&#x27;薪资&#x27;</span>) <span class="comment"># frameon 控制图例有无框</span></span><br><span class="line">plt.xlabel(<span class="string">&#x27;平均每个月工作时长（小时）&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;满意度水平&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;满意度水平与平均每个月工作小时&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917184145384.png" alt="image-20220917184145384"></p>
+<p><strong>使用seaborn库绘图</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sns.lmplot(<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>, <span class="string">&#x27;满意度&#x27;</span>, data, hue=<span class="string">&#x27;薪资&#x27;</span>, fit_reg=<span class="literal">False</span>, height=<span class="number">4</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;平均每个月工作时长（小时）&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;满意度水平&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;满意度水平与平均每个月工作小时&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917184716387.png" alt="image-20220917184716387"></p>
+<h2 id="了解seaborn的绘图风格"><a href="#了解seaborn的绘图风格" class="headerlink" title="了解seaborn的绘图风格"></a>了解seaborn的绘图风格</h2><ul>
+<li>一个引人入胜、赏心悦目的图形不仅更容易挖掘数据中的细节，而且能有利于向读者交流分析，并使读者更容易被记住。</li>
+<li>虽然Matplotlib库是高度可定制的，但是很难根据需求确定需要调整的参数，且调整比较复杂。而seaborn库包含了许多自定义主题和高级界面，可以用于控制Matplotlib图形的外观。例如，自定义一个偏移直线图像，用于展示绘图风格。</li>
+</ul>
+<p><strong>用偏移直线图像展示绘图风格</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">plt.rcParams[<span class="string">&#x27;axes.unicode_minus&#x27;</span>] = <span class="literal">False</span></span><br><span class="line">x = np.arange(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)</span><br><span class="line">y1 = x + <span class="number">1</span></span><br><span class="line">y2 = x + <span class="number">3</span></span><br><span class="line">y3 = x + <span class="number">5</span></span><br><span class="line"><span class="comment"># 绘制3条不同的直线</span></span><br><span class="line"><span class="comment"># 第1部分</span></span><br><span class="line">plt.title(<span class="string">&#x27;Matplotlib库的绘图风格&#x27;</span>)</span><br><span class="line">plt.plot(x, y1)</span><br><span class="line">plt.plot(x, y2)</span><br><span class="line">plt.plot(x, y3)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第2部分</span></span><br><span class="line"><span class="comment"># 使用seaborn库绘图</span></span><br><span class="line">sns.set_style(<span class="string">&#x27;darkgrid&#x27;</span>)  <span class="comment"># 全黑风格</span></span><br><span class="line">sns.set_style(&#123;<span class="string">&#x27;font.sans-serif&#x27;</span>:[<span class="string">&#x27;simhei&#x27;</span>, <span class="string">&#x27;Arial&#x27;</span>]&#125;)</span><br><span class="line">sns.lineplot(x, y1)</span><br><span class="line">sns.lineplot(x, y2)</span><br><span class="line">sns.lineplot(x, y3)</span><br><span class="line">plt.title(<span class="string">&#x27;seaborn库的绘图风格&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917181016921.png" alt="image-20220917181016921"></p>
+<h3 id="主题样式"><a href="#主题样式" class="headerlink" title="主题样式"></a>主题样式</h3><ul>
+<li>在seaborn库中含有darkgrid（灰色背景+白网格）、whitegrid（白色背景+黑网格）、dark（仅灰色背景）、white（仅白色背景）和ticks（坐标轴带刻度）5种预设的主题。其中，darkgrid与whitegrid主题有助于在绘图时进行定量信息的查找，dark与white主题有助于防止网格与表示数据的线条混淆，ticks主题有助于体现少量特殊的数据元素结构。</li>
+<li>seaborn图形的默认主题为darkgrid。读者可以使用set_style函数修改主题及其默认参数。set_style函数的使用格式如下。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.set_style(style=<span class="literal">None</span>, rc=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>set_style函数只能修改axes_style函数显示的参数，axes_style函数可以达到临时设置图形样式的效果。如下</strong></p>
+<p><strong>使用便宜直线展示各主体及修改默认参数示例</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">x = np.arange(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)</span><br><span class="line">y1 = x + <span class="number">1</span></span><br><span class="line">y2 = x + <span class="number">3</span></span><br><span class="line">y3 = x + <span class="number">5</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">showLine</span>(<span class="params">flip=<span class="number">1</span></span>):</span><br><span class="line">    sns.lineplot(x, y1)</span><br><span class="line">    sns.lineplot(x, y2)</span><br><span class="line">    sns.lineplot(x, y3)</span><br><span class="line">pic = plt.figure(figsize=(<span class="number">12</span>, <span class="number">8</span>))</span><br><span class="line"><span class="keyword">with</span> sns.axes_style(<span class="string">&#x27;darkgrid&#x27;</span>):  <span class="comment"># 使用darkgrid主题</span></span><br><span class="line">    pic.add_subplot(<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>)</span><br><span class="line">    showLine()</span><br><span class="line">    plt.title(<span class="string">&#x27;darkgrid&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> sns.axes_style(<span class="string">&#x27;whitegrid&#x27;</span>):  <span class="comment"># 使用whitegrid主题</span></span><br><span class="line">    pic.add_subplot(<span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line">    showLine()</span><br><span class="line">    plt.title(<span class="string">&#x27;whitegrid&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> sns.axes_style(<span class="string">&#x27;dark&#x27;</span>):  <span class="comment"># 使用dark主题</span></span><br><span class="line">    pic.add_subplot(<span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line">    showLine()</span><br><span class="line">    plt.title(<span class="string">&#x27;dark&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> sns.axes_style(<span class="string">&#x27;white&#x27;</span>):  <span class="comment"># 使用white主题</span></span><br><span class="line">    pic.add_subplot(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">    showLine()</span><br><span class="line">    plt.title(<span class="string">&#x27;white&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> sns.axes_style(<span class="string">&#x27;ticks&#x27;</span>):  <span class="comment"># 使用ticks主题</span></span><br><span class="line">    pic.add_subplot(<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line">    showLine()</span><br><span class="line">    plt.title(<span class="string">&#x27;ticks&#x27;</span>)</span><br><span class="line">sns.set_style(style=<span class="string">&#x27;darkgrid&#x27;</span>, rc=&#123;<span class="string">&#x27;font.sans-serif&#x27;</span>: [<span class="string">&#x27;MicrosoftYaHei&#x27;</span>, <span class="string">&#x27;SimHei&#x27;</span>],</span><br><span class="line">                            <span class="string">&#x27;grid.color&#x27;</span>: <span class="string">&#x27;black&#x27;</span>&#125;)  <span class="comment"># 修改主题中参数</span></span><br><span class="line">pic.add_subplot(<span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>)</span><br><span class="line">showLine()</span><br><span class="line">plt.title(<span class="string">&#x27;修改参数&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917181947221.png" alt="image-20220917181947221"></p>
+<h3 id="元素缩放"><a href="#元素缩放" class="headerlink" title="元素缩放"></a>元素缩放</h3><ul>
+<li><p>在seaborn库中通过set_context函数可以设置输出图片元素的大小尺寸。set_context函数的使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.set_context(context=<span class="literal">None</span>, font_scale=<span class="number">1</span>, rc=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>context参数可选择paper、notebook、talk和poster类型，默认为notebook。使用set_context函数只能修改plotting_context函数显示的参数，plotting_context函数通过调整参数改变图中标签、线条或其他元素的大小，但不会影响整体样式。</strong></p>
+</li>
+</ul>
+<p><strong>使用偏移直线函数展示4种不同缩放类型的图形</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">sns.<span class="built_in">set</span>()</span><br><span class="line">x = np.arange(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)</span><br><span class="line">y1 = x + <span class="number">1</span></span><br><span class="line">y2 = x + <span class="number">3</span></span><br><span class="line">y3 = x + <span class="number">5</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">showLine</span>(<span class="params">flip=<span class="number">1</span></span>):</span><br><span class="line">    sns.lineplot(x, y1)</span><br><span class="line">    sns.lineplot(x, y2)</span><br><span class="line">    sns.lineplot(x, y3)</span><br><span class="line">pic = plt.figure(figsize=(<span class="number">8</span>, <span class="number">8</span>))</span><br><span class="line"><span class="comment"># 恢复默认参数</span></span><br><span class="line">pic = plt.figure(figsize=(<span class="number">8</span>, <span class="number">8</span>), dpi=<span class="number">100</span>)</span><br><span class="line"><span class="keyword">with</span> sns.plotting_context(<span class="string">&#x27;paper&#x27;</span>):  <span class="comment"># 选择paper类型</span></span><br><span class="line">    pic.add_subplot(<span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">    showLine()</span><br><span class="line">    plt.title(<span class="string">&#x27;paper&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> sns.plotting_context(<span class="string">&#x27;notebook&#x27;</span>):  <span class="comment"># 选择notebook类型</span></span><br><span class="line">    pic.add_subplot(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">    showLine()</span><br><span class="line">    plt.title(<span class="string">&#x27;notebook&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> sns.plotting_context(<span class="string">&#x27;talk&#x27;</span>):  <span class="comment"># 选择talk类型</span></span><br><span class="line">    pic.add_subplot(<span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">    showLine()</span><br><span class="line">    plt.title(<span class="string">&#x27;talk&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> sns.plotting_context(<span class="string">&#x27;poster&#x27;</span>):  <span class="comment"># 选择poster类型</span></span><br><span class="line">    pic.add_subplot(<span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>)</span><br><span class="line">    showLine()</span><br><span class="line">    plt.title(<span class="string">&#x27;poster&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917182152064.png" alt="image-20220917182152064"></p>
+<h3 id="边框控制"><a href="#边框控制" class="headerlink" title="边框控制"></a>边框控制</h3><p>在seaborn库中，可以使用despine函数移除任意位置的边框，调节边框的位置，修剪边框的长短。despine函数的基本使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">seaborn.despine(fig=<span class="literal">None</span>, ax=<span class="literal">None</span>, top=<span class="literal">True</span>, right=<span class="literal">True</span>, left=<span class="literal">False</span>, bottom=<span class="literal">False</span>, offset=<span class="literal">None</span>, trim=<span class="literal">False</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>despine函数的主要参数及其说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>top</td>
+<td>接收bool，表示删除顶部边框。默认为True</td>
+</tr>
+<tr>
+<td>right</td>
+<td>接收bool，表示删除右侧边框。默认为True</td>
+</tr>
+<tr>
+<td>left</td>
+<td>接收bool，表示删除左侧边框。默认为False</td>
+</tr>
+<tr>
+<td>bottom</td>
+<td>接收bool，表示删除底部边框。默认为False</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>接收int或dict，表示边框与轴的距离。无默认值</td>
+</tr>
+<tr>
+<td>trim</td>
+<td>接收bool，表示将边框限制为每个非扭曲轴上的最小和最大主刻度。默认为False</td>
+</tr>
+</tbody></table>
+<p><strong>控制图形边框</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> sns.axes_style(<span class="string">&#x27;white&#x27;</span>):</span><br><span class="line">    showLine()</span><br><span class="line">    sns.despine()  <span class="comment"># 默认无参数状态，就是删除上方和右方的边框</span></span><br><span class="line">    plt.title(<span class="string">&#x27;控制图形边框&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> sns.axes_style(<span class="string">&#x27;white&#x27;</span>):</span><br><span class="line">    data = np.random.normal(size=(<span class="number">20</span>, <span class="number">6</span>)) + np.arange(<span class="number">6</span>) / <span class="number">2</span></span><br><span class="line">    <span class="built_in">print</span>(data)</span><br><span class="line">    sns.boxplot(data=data)</span><br><span class="line">    sns.despine(offset=<span class="number">10</span>, left=<span class="literal">False</span>, bottom=<span class="literal">False</span>)</span><br><span class="line">    plt.title(<span class="string">&#x27;控制图形边框&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>使用despine函数可以绘制不同边框的图形以及改变坐标轴的距离。</p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917182251700.png" alt="image-20220917182251700"></p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917182256991.png" alt="image-20220917182256991"></p>
+<h2 id="熟悉seaborn的调色板"><a href="#熟悉seaborn的调色板" class="headerlink" title="熟悉seaborn的调色板"></a>熟悉seaborn的调色板</h2><ul>
+<li>颜色在可视化中非常重要，可用于代表各种特征，并且提高整个图的观赏性。如果有效地使用颜色，那么可以显示数据中的图案；如果颜色使用不当，那么将会隐藏数据中图案。由此可见，调色板是seaborn库中绘制图形的基础。</li>
+<li>通常在不知道数据具体特征的情况下，将无法知道使用什么类型的调色板或颜色映射最优。因此，将使用定性调色板、连续调色板和离散调色板3种不同类型的调色板，用于区分使用color_palette函数。</li>
+</ul>
+<p>常用于调色板的函数及其作用如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>函数</strong></th>
+<th><strong>作用</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hls_palette</td>
+<td>用于控制调色板颜色的亮度和饱和</td>
+</tr>
+<tr>
+<td>xkcd_palette</td>
+<td>使用xkcd颜色中的颜色名称创建调色板</td>
+</tr>
+<tr>
+<td>cubehelix_palette</td>
+<td>用于创建连续调色板</td>
+</tr>
+<tr>
+<td>light_palette</td>
+<td>用于创建颜色从浅色或深色的连续调色板</td>
+</tr>
+<tr>
+<td>dark_palette</td>
+<td>用于创建颜色从深色到深色混合的连续调色板</td>
+</tr>
+<tr>
+<td>choose_light_palette</td>
+<td>启动一个交互式小部件以创建一个浅色连续调色板</td>
+</tr>
+<tr>
+<td>choose_dark_palette</td>
+<td>启动一个交互式小部件以创建一个深色连续调色板</td>
+</tr>
+<tr>
+<td>diverging_palette</td>
+<td>用于创建离散调色板</td>
+</tr>
+<tr>
+<td>choose_diverging_palette</td>
+<td>启动交互式小部件选择不同的调色板，与diverging_palette函数功能相对应</td>
+</tr>
+<tr>
+<td>color_palette</td>
+<td>用于返回定义调色板的颜色列表或连续颜色图</td>
+</tr>
+<tr>
+<td>set_palette</td>
+<td>用于设置调色板，为所有图设置默认颜色周期</td>
+</tr>
+</tbody></table>
+<h3 id="定性调色板"><a href="#定性调色板" class="headerlink" title="定性调色板"></a>定性调色板</h3><p>当需要区分没有固定顺序的数据离散区块时，定性（或分类）调色板是最佳选择。在导入seaborn库后，默认颜色将更改以10种颜色为一组的颜色。</p>
+<p><strong>seaborn默认颜色</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.palplot(sns.color_palette())</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917190759472.png" alt="image-20220917190759472"></p>
+<p>默认颜色主题有’deep、muted、pastel、bright、dark和colorblind’几种不同的变化，默认为deep。</p>
+<p><strong>导入颜色主题</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">palette = sns.color_palette(<span class="string">&#x27;muted&#x27;</span>)</span><br><span class="line">sns.palplot(palette)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917190925535.png" alt="image-20220917190925535"></p>
+<h4 id="使用圆形颜色系统"><a href="#使用圆形颜色系统" class="headerlink" title="使用圆形颜色系统"></a>使用圆形颜色系统</h4><ul>
+<li>当有一个任意数量的类别需要区分时，最简单的方法是在圆形颜色空间中绘制均匀间隔的颜色（色调在保持亮度和饱和度不变的同时变化）。在需要使用比默认颜色循环中设置的颜色更多时，常使用圆形颜色系统设置图案颜色。最常用的方法是使用HLS（H表示色调、L表示亮度、S表示饱和度）颜色空间，这是一个RGB（R代表红色、G代表绿色、B代表蓝色）值的简单转换。</li>
+</ul>
+<p><strong>HLS颜色空间</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.palplot(sns.color_palette(<span class="string">&#x27;hls&#x27;</span>, <span class="number">8</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917191129462.png" alt="image-20220917191129462"></p>
+<p><strong>控制颜色亮度和饱和度</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.palplot(sns.hls_palette(<span class="number">8</span>, l=<span class="number">.5</span>, s=<span class="number">.8</span>))  <span class="comment"># l控制亮度，s控制饱和度</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917191244463.png" alt="image-20220917191244463"></p>
+<ul>
+<li>由于人类视觉系统的工作方式，会导致在RGB度量上强度一致的颜色在视觉中并不平衡。例如，人们认为黄色和绿色是相对较亮的颜色，而蓝色则相对较暗，这可能会出现视觉系统与HLS系统不一致的问题。</li>
+<li>为了解决这一问题，seaborn库提供了一个HUSL系统的接口，也使得选择均匀间隔的色彩变得更加容易，同时保持亮度和饱和度更加一致。</li>
+</ul>
+<p><strong>调节颜色亮度和饱和度在视觉上一致</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.palplot(sns.color_palette(<span class="string">&#x27;husl&#x27;</span>, <span class="number">8</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917191352656.png" alt="image-20220917191352656"></p>
+<h4 id="使用xkcd颜色"><a href="#使用xkcd颜色" class="headerlink" title="使用xkcd颜色"></a>使用xkcd颜色</h4><p>xkcd是对随机的RGB颜色空间的命名，产生了954个颜色，可以随时通过xkcd_rgb字典装饰器调用，也可以通过xkcd_palette函数自定义调色板。</p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917182528847.png" alt="image-20220917182528847"></p>
+<p><strong>xkcd颜色使用示例</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, y1, sns.xkcd_rgb[<span class="string">&#x27;pale red&#x27;</span>], lw=<span class="number">3</span>) <span class="comment"># lw折线的粗细</span></span><br><span class="line">plt.plot(x, y2, sns.xkcd_rgb[<span class="string">&#x27;medium green&#x27;</span>], lw=<span class="number">3</span>)</span><br><span class="line">plt.plot(x, y3, sns.xkcd_rgb[<span class="string">&#x27;denim blue&#x27;</span>], lw=<span class="number">3</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;线条颜色示例&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>结果如上图所示</p>
+<p><strong>自定义定性调色板</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">colors = [<span class="string">&#x27;windows blue&#x27;</span>, <span class="string">&#x27;amber&#x27;</span>, <span class="string">&#x27;greyish&#x27;</span>, <span class="string">&#x27;faded green&#x27;</span>, <span class="string">&#x27;dusty purple&#x27;</span>]</span><br><span class="line">sns.palplot(sns.xkcd_palette(colors))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917191620460.png" alt="image-20220917191620460"></p>
+<h3 id="连续调色板"><a href="#连续调色板" class="headerlink" title="连续调色板"></a>连续调色板</h3><p>在数据连续时，通常使用连续调色板。对于连续的数据，使用色调上有细微变化、在亮度和饱和度上有很大变化的调色板，将会自然地展现数据中相对重要的部分。</p>
+<h4 id="Color-Brewer库"><a href="#Color-Brewer库" class="headerlink" title="Color Brewer库"></a>Color Brewer库</h4><p>在Color Brewer库中含有大量的连续调色板，以调色板中的主色（或颜色）命名。如果需要反转亮度渐变，那么可以为调色板名称添加后缀“_r”，即可实现。如果颜色鲜艳的线难以区分，那么seaborn库增加了一个允许创建没有动态范围的“dark”面板，只需在名称添加后缀“_d”，即可切换至“dark”面板。</p>
+<p>在Color Brewer库中，连续调色板名称及渐变顺序如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>渐变顺序</strong></th>
+<th><strong>名称</strong></th>
+<th><strong>渐变顺序</strong></th>
+<th><strong>名称</strong></th>
+<th><strong>渐变顺序</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YlOrRd</td>
+<td>黄橙红</td>
+<td>Purples</td>
+<td>紫</td>
+<td>Greys</td>
+<td>白色</td>
+</tr>
+<tr>
+<td>YlOrBr</td>
+<td>黄橙棕</td>
+<td>PuRd</td>
+<td>紫红</td>
+<td>Greens</td>
+<td>绿</td>
+</tr>
+<tr>
+<td>YlGnBu</td>
+<td>黄绿蓝</td>
+<td>PuBuGn</td>
+<td>紫蓝绿</td>
+<td>GnBu</td>
+<td>绿蓝</td>
+</tr>
+<tr>
+<td>YlGn</td>
+<td>黄绿</td>
+<td>PuBu</td>
+<td>紫蓝</td>
+<td>Bupu</td>
+<td>蓝紫</td>
+</tr>
+<tr>
+<td>Reds</td>
+<td>红</td>
+<td>OrRd</td>
+<td>黄色</td>
+<td>BuGn</td>
+<td>蓝绿</td>
+</tr>
+<tr>
+<td>RdPu</td>
+<td>红紫</td>
+<td>Oranges</td>
+<td>黑色</td>
+<td>Blues</td>
+<td>蓝</td>
+</tr>
+</tbody></table>
+<p><strong>绘制连续调色板、亮度反转及切换面板的示例</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sns.palplot(sns.color_palette(<span class="string">&#x27;Greens&#x27;</span>))</span><br><span class="line">sns.palplot(sns.color_palette(<span class="string">&#x27;YlOrRd_r&#x27;</span>))</span><br><span class="line">sns.palplot(sns.color_palette(<span class="string">&#x27;YlOrRd_d&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917192036737.png" alt="image-20220917192036737"></p>
+<h4 id="cubehelix调色板"><a href="#cubehelix调色板" class="headerlink" title="cubehelix调色板"></a>cubehelix调色板</h4><p>从cubehelix制作连续调色板，将产生一个具有线性增加或降低亮度的色图，这意味着映射信息会在保存为黑色和白色（为印刷）时或被一个色盲的人浏览时可以得以保留显示。在seaborn库中，可使用cubehelix_palette函数制作cubehelix调色板。 cubehelix_palette函数的使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.cubehelix_palette(n_colors=<span class="number">6</span>, start=<span class="number">0</span>, rot=<span class="number">0.4</span>, gamma=<span class="number">1.0</span>, hue=<span class="number">0.8</span>, light=<span class="number">0.85</span>, dark=<span class="number">0.15</span>, reverse=<span class="literal">False</span>, as_cmap=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>cubehelix_palette函数的常用参数及其说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>n_color</strong></td>
+<td>接收int，表示调色板中颜色数目。默认为6</td>
+</tr>
+<tr>
+<td><strong>start</strong></td>
+<td>接收0~3的float，表示指定开始时的色调。默认为0</td>
+</tr>
+<tr>
+<td><strong>rot</strong></td>
+<td>接收float。表示指定在调色板旋转范围（次数）。默认为0.4</td>
+</tr>
+<tr>
+<td><strong>light</strong></td>
+<td>接收0~1的float，表示颜色明亮程度。默认为0.85</td>
+</tr>
+<tr>
+<td><strong>dark</strong></td>
+<td>接收0~1的float，表示颜色深暗程度。默认为0.15</td>
+</tr>
+<tr>
+<td><strong>as_cmap</strong></td>
+<td>接收bool，表示是否返回Matplotlib颜色映射对象。默认为False</td>
+</tr>
+</tbody></table>
+<p><strong>使用cubehelix_palette函数生成颜色调色板并传入绘图函数</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sns.palplot(sns.cubehelix_palette(<span class="number">8</span>, start=<span class="number">1</span>, rot=<span class="number">0</span>))</span><br><span class="line">x, y = np.random.multivariate_normal([<span class="number">0</span>, <span class="number">0</span>], [[<span class="number">1</span>, -<span class="number">.5</span>], [-<span class="number">.5</span>, <span class="number">1</span>]], size=<span class="number">300</span>).T</span><br><span class="line">cmap = sns.cubehelix_palette(as_cmap=<span class="literal">True</span>)  <span class="comment"># 生产调色板对象</span></span><br><span class="line">sns.kdeplot(x, y, cmap=cmap, shade=<span class="literal">True</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;连续调色板&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917192355486.png" alt="image-20220917192355486"></p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917192403792.png" alt="image-20220917192403792"></p>
+<h4 id="自定义连续调色板"><a href="#自定义连续调色板" class="headerlink" title="自定义连续调色板"></a>自定义连续调色板</h4><ul>
+<li>对于自定义连续调色板，可以调用light_palette函数和dark_palette函数进行单一颜色“播种”，种子可以产生单一颜色从浅色或深色的调色板。如果使用的是IPython notebook（供Jupyter notebooks使用的一个Jupyter内核组件），light_palette函数和dark_palette函数还可以分别与choose_light_palette函数和choose_dark_palette函数启动交互式小部件创建单一颜色的调色板。</li>
+<li>任何有效的Matplotlib颜色都可以传递给light_palette函数和dark_palette函数，包括HLS颜色空间或HUSL颜色空间的RGB元组和xkcd颜色。</li>
+</ul>
+<p><strong>生成自定义调色板及传入绘图函数</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sns.palplot(sns.light_palette(<span class="string">&#x27;blue&#x27;</span>))</span><br><span class="line">sns.palplot(sns.dark_palette(<span class="string">&#x27;yellow&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917192547453.png" alt="image-20220917192547453"></p>
+<p><strong>使用husl颜色空间作为种子</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pal = sns.dark_palette((<span class="number">200</span>, <span class="number">80</span>, <span class="number">60</span>), <span class="built_in">input</span>=<span class="string">&#x27;husl&#x27;</span>, reverse=<span class="literal">True</span>, as_cmap=<span class="literal">True</span>)</span><br><span class="line">sns.kdeplot(x, y, cmap=pal)</span><br><span class="line">plt.title(<span class="string">&#x27;自定义连续调色板&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917192702111.png" alt="image-20220917192702111"></p>
+<h3 id="离散调色板"><a href="#离散调色板" class="headerlink" title="离散调色板"></a>离散调色板</h3><ul>
+<li>离散调色板在用于大的、低的值和大的、高的值上都有非常重要的数据。数据中通常有一个定义明确的中点。例如，如果需要绘制某个基线时间点的温度变化，那么使用偏差色图显示相对减少的区域和相对增加的区域将会相对较好。</li>
+<li>选择离散调色板的规则是，起始色调具有相似的亮度和饱和度，并且经过色调偏移后在中点处和谐的相遇。同时，需要尽量避免使用红色与绿色。</li>
+</ul>
+<h4 id="默认中较好的离散调色板"><a href="#默认中较好的离散调色板" class="headerlink" title="默认中较好的离散调色板"></a>默认中较好的离散调色板</h4><p>在Color Brewer库中有一组精心设计的离散颜色映射</p>
+<p><strong>Color Brewer库中的离散调色板</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sns.palplot(sns.color_palette(<span class="string">&#x27;BrBG&#x27;</span>, <span class="number">7</span>))</span><br><span class="line">sns.palplot(sns.color_palette(<span class="string">&#x27;RdBu_r&#x27;</span>, <span class="number">7</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917193108162.png" alt="image-20220917193108162"></p>
+<p>在Matplotlib库中内置了coolwarm离散调色板，但是他的中间值和极值之间的对比度较小。</p>
+<p><strong>coolwarm离散调色板</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.palplot(sns.color_palette(<span class="string">&#x27;coolwarm&#x27;</span>, <span class="number">7</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917193131268.png" alt="image-20220917193131268"></p>
+<h4 id="自定义离散调色板"><a href="#自定义离散调色板" class="headerlink" title="自定义离散调色板"></a>自定义离散调色板</h4><p>在seaborn库中可以使用diverging_palette函数（及choose_diverging_palette函数交互式小部件）为离散数据创建自定义调色板。diverging_palette函数可使用HULS颜色空间创建不同的调色板。diverging_palette函数的使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.diverging_palette(h_neg, h_pos, s=<span class="number">75</span>, l=<span class="number">50</span>, sep=<span class="number">1</span>, n=<span class="number">6</span>, center=<span class="string">&#x27;light&#x27;</span>, as_cmap=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>diverging_palette函数的常用参数及其说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>h_neg</strong></td>
+<td>接收0~359之间的float，表示调色板负面范围色调。无默认值</td>
+</tr>
+<tr>
+<td><strong>h_pos</strong></td>
+<td>接收0~359之间的float，表示调色板正面范围色调。无默认值</td>
+</tr>
+<tr>
+<td><strong>s</strong></td>
+<td>接收0~100之间的float，表示两个范围色调饱和度。默认为75</td>
+</tr>
+<tr>
+<td><strong>l</strong></td>
+<td>接收0~100之间的float，表示两个范围色调亮度。默认为50</td>
+</tr>
+<tr>
+<td><strong>n</strong></td>
+<td>接收int，表示调色板颜色数目。默认值为6</td>
+</tr>
+<tr>
+<td><strong>center</strong></td>
+<td>接收light或dark，表示调色板中心是明或暗。默认为light</td>
+</tr>
+<tr>
+<td><strong>as_cmap</strong></td>
+<td>接收bool，表示是否返回Matplotlib颜色映射对象。默认为False</td>
+</tr>
+</tbody></table>
+<p><strong>使用diverging_palette函数自定义离散调色板</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sns.palplot(sns.diverging_palette(<span class="number">240</span>, <span class="number">10</span>, n=<span class="number">7</span>))</span><br><span class="line">sns.palplot(sns.diverging_palette(<span class="number">150</span>, <span class="number">275</span>, s=<span class="number">80</span>, l=<span class="number">55</span>, n=<span class="number">7</span>))</span><br><span class="line"><span class="comment"># 创建中间是暗色的调色板</span></span><br><span class="line">sns.palplot(sns.diverging_palette(<span class="number">250</span>, <span class="number">15</span>, s=<span class="number">75</span>, l=<span class="number">40</span>, n=<span class="number">7</span>, center=<span class="string">&#x27;dark&#x27;</span>))</span><br><span class="line"><span class="comment"># 通过sep参数控制中间区域渐变宽度</span></span><br><span class="line">sns.palplot(sns.diverging_palette(<span class="number">150</span>, <span class="number">275</span>, s=<span class="number">80</span>, l=<span class="number">55</span>, n=<span class="number">7</span>, sep=<span class="number">80</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917193433667.png" alt="image-20220917193433667"></p>
+<h3 id="设置默认调色板"><a href="#设置默认调色板" class="headerlink" title="设置默认调色板"></a>设置默认调色板</h3><p>color_palette函数还有一个与之相对应的函数，即set_palette函数。set_palette函数接受与color_palette函数相同的参数，可更改默认的Matplotlib参数，更改后所有的调色板将变为设置调色板配置。使用set_palette函数设置调色板。</p>
+<p><strong>使用set_palette函数设置调色板</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">x = np.arange(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)</span><br><span class="line">y1 = x + <span class="number">1</span></span><br><span class="line">y2 = x + <span class="number">3</span></span><br><span class="line">y3 = x + <span class="number">5</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">showLine</span>(<span class="params">flip=<span class="number">1</span></span>):</span><br><span class="line">    sns.lineplot(x, y1)</span><br><span class="line">    sns.lineplot(x, y2)</span><br><span class="line">    sns.lineplot(x, y3)</span><br><span class="line"><span class="comment"># 使用默认调色板</span></span><br><span class="line">showLine()</span><br><span class="line">plt.title(<span class="string">&#x27;默认调色板&#x27;</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># sns.set_palette函数设置调色板</span></span><br><span class="line">sns.set_palette(<span class="string">&#x27;YlOrRd_d&#x27;</span>)</span><br><span class="line">showLine()</span><br><span class="line">plt.title(<span class="string">&#x27;使用set_palette设置调色板&#x27;</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line">sns.<span class="built_in">set</span>()  <span class="comment"># 恢复所有默认设置</span></span><br><span class="line">plt.rcParams[<span class="string">&#x27;font.sans-serif&#x27;</span>] = [<span class="string">&#x27;SimHei&#x27;</span>]</span><br><span class="line">plt.rcParams[<span class="string">&#x27;axes.unicode_minus&#x27;</span>] = <span class="literal">False</span></span><br><span class="line">pic = plt.figure(figsize=(<span class="number">8</span>, <span class="number">4</span>))</span><br><span class="line"><span class="keyword">with</span> sns.color_palette(<span class="string">&#x27;PuBuGn_d&#x27;</span>):  <span class="comment"># 临时配置调色板</span></span><br><span class="line">    pic.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">    showLine()</span><br><span class="line">    plt.title(<span class="string">&#x27;使用color_palette设置调色板&#x27;</span>)</span><br><span class="line">pic.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>)  <span class="comment"># 使用默认调色板</span></span><br><span class="line">showLine()</span><br><span class="line">plt.title(<span class="string">&#x27;默认调色板&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917183007934.png" alt="image-20220917183007934"></p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917183012104.png" alt="image-20220917183012104"></p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917193759005.png" alt="image-20220917193759005"></p>
+<h1 id="绘制关系图"><a href="#绘制关系图" class="headerlink" title="绘制关系图"></a>绘制关系图</h1><ul>
+<li>关系图可用于了解数据集中变量间的相互关联，探查一个变量与另外一个或几个变量的相关关系。其中，最基本的关系图是散点图、折线图和热力图，使用简单且易于理解的数据表示方法，但可以表示复杂的数据集结构。</li>
+<li>在seaborn库中提供了scatterplot函数、lineplot函数、heatmap函数、relplot函数，在Matplotlib库的基础上优化了绘制散点图、折线图和热力图，并且通过色调、大小、样式增强显示。</li>
+</ul>
+<h2 id="绘制散点图"><a href="#绘制散点图" class="headerlink" title="绘制散点图"></a>绘制散点图</h2><p>在seaborn库中，可以使用scatterplot函数绘制散点图。scatterplot函数的使用格式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.scatterplot(x=<span class="literal">None</span>, y=<span class="literal">None</span>, hue=<span class="literal">None</span>, style=<span class="literal">None</span>, size=<span class="literal">None</span>, data=<span class="literal">None</span>, palette=<span class="literal">None</span>, hue_order=<span class="literal">None</span>, hue_norm=<span class="literal">None</span>, sizes=<span class="literal">None</span>, size_order=<span class="literal">None</span>, size_norm=<span class="literal">None</span>, markers=<span class="literal">True</span>, style_order=<span class="literal">None</span>, x_bins=<span class="literal">None</span>, y_bins=<span class="literal">None</span>, units=<span class="literal">None</span>, estimator=<span class="literal">None</span>, ci=<span class="number">95</span>, n_boot=<span class="number">1000</span>, alpha=<span class="literal">None</span>, x_jitter=<span class="literal">None</span>, y_jitter=<span class="literal">None</span>, legend=<span class="string">&#x27;auto&#x27;</span>, ax=<span class="literal">None</span>, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>scatterplot函数的主要参数及其说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>x<strong><strong>，</strong></strong>y</strong></td>
+<td>接收array、str、series，表示输入变量、字符串应该是data中对应变量名，使用series将会在轴上显示名称。无默认值</td>
+</tr>
+<tr>
+<td><strong>data</strong></td>
+<td>接收DataFrame，表示用于绘图的数据集。默认为None</td>
+</tr>
+<tr>
+<td><strong>hue</strong></td>
+<td>接收data中变量名，表示传入分类变量，以颜色分类。默认为None</td>
+</tr>
+<tr>
+<td><strong>size</strong></td>
+<td>接收data中变量名，表示传入分类变量，以标记大小分类。默认为None</td>
+</tr>
+<tr>
+<td><strong>sizes</strong></td>
+<td>接收list、dict、tuple，表示确定不同级别的size，可以一一映射，也可以设置最大最小范围。默认为None</td>
+</tr>
+<tr>
+<td><strong>style</strong></td>
+<td>接收data中变量名，表示传入分类变量，以标记形状分类。默认为None</td>
+</tr>
+<tr>
+<td><strong>markers</strong></td>
+<td>接收bool、list、dict，表示确定不同级别的style。默认为None</td>
+</tr>
+<tr>
+<td><strong>alpha</strong></td>
+<td>接收float、auto，表示点的透明度。默认为auto</td>
+</tr>
+<tr>
+<td><strong>legend</strong></td>
+<td>接收brief、full、False，表示图形图例绘制形式。默认为auto</td>
+</tr>
+<tr>
+<td><strong>palette</strong></td>
+<td>接收调色板，表示改变默认绘图颜色。默认为None</td>
+</tr>
+</tbody></table>
+<p>示例：绘制散点图</p>
+<p>离职率（Dimission Rate）是企业用于衡量企业内部人力资源流动状况的一个重要指标，通过对离职率的分析，可以了解企业对员工的吸引和满意情况。而企业、评价分数、平均工作时间等各种因素都会对人员流动造成一定的影响。</p>
+<p>人员离职率数据的字段说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>字段名称</strong></th>
+<th><strong>字段含义</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>满意度</strong></td>
+<td>员工满意程度，取值为0~1之间，得分越高代表员工对企业越满意</td>
+<td>0.38</td>
+</tr>
+<tr>
+<td><strong>评分</strong></td>
+<td>最近一次的员工表现度评分，取值为为0~1之间，得分越高代表员工表现越好）</td>
+<td>0.53</td>
+</tr>
+<tr>
+<td><strong>总项目数</strong></td>
+<td>员工做过的总项目数</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>每月平均工作小时数</strong></td>
+<td>每月的平均工作时长（单位：小时）</td>
+<td>157</td>
+</tr>
+<tr>
+<td><strong>工龄</strong></td>
+<td>员工在公司的时间（单位：年）</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>工作事故</strong></td>
+<td>员工是否在职期间有过工伤（0表示没有，1表示有）</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>离职</strong></td>
+<td>是否离职（0表示在职，1表示离职）</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>5****年内升职</strong></td>
+<td>最近5年是否有过升职（0表示没有，1表示有）</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>部门</strong></td>
+<td>员工所属的部门，包括销售部、财务部、人力资源部、IT部、管理部、技术部、支持部、产品开发部、市场部、研发部</td>
+<td>销售部</td>
+</tr>
+<tr>
+<td><strong>薪资</strong></td>
+<td>薪资的水平，包括低、中、高</td>
+<td>低</td>
+</tr>
+</tbody></table>
+<p>基于人员离职率数据，绘制散点图分析产品开发部已离职的员工的评分与平均工作时间。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="comment"># 忽略警告</span></span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&#x27;ignore&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用seaborn库绘图</span></span><br><span class="line">sns.set_style(<span class="string">&#x27;whitegrid&#x27;</span>, &#123;<span class="string">&#x27;font.sans-serif&#x27;</span>:[<span class="string">&#x27;simhei&#x27;</span>, <span class="string">&#x27;Arial&#x27;</span>]&#125;)</span><br><span class="line"><span class="comment"># 设置中文字体</span></span><br><span class="line">plt.rcParams[<span class="string">&#x27;font.sans-serif&#x27;</span>] = [<span class="string">&#x27;SimHei&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">hr = pd.read_csv(<span class="string">&#x27;../data/hr.csv&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"><span class="comment"># 提取部门为产品开发部、离职为1的数据</span></span><br><span class="line">product = hr.iloc[(hr[<span class="string">&#x27;部门&#x27;</span>].values==<span class="string">&#x27;产品开发部&#x27;</span>) &amp; (hr[<span class="string">&#x27;离职&#x27;</span>].values==<span class="number">1</span>), :]</span><br><span class="line">ax = sns.scatterplot(x=<span class="string">&#x27;评分&#x27;</span>, y=<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>, data=product)</span><br><span class="line">plt.title(<span class="string">&#x27;评价分数与平均工作时间散点图&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917194648768.png" alt="image-20220917194648768"></p>
+<p><strong>通过对点着色和改变标记来突显类别</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">markers = &#123;<span class="string">&#x27;低&#x27;</span> : <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;中&#x27;</span> : <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;高&#x27;</span> : <span class="string">&#x27;s&#x27;</span>&#125;</span><br><span class="line">sns.scatterplot(x=<span class="string">&#x27;评分&#x27;</span>, y=<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>,</span><br><span class="line">                     hue=<span class="string">&#x27;薪资&#x27;</span>, style=<span class="string">&#x27;薪资&#x27;</span>, markers=markers, data=product)</span><br><span class="line">plt.title(<span class="string">&#x27;评价分数与平均工作时间散点图&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917194925939.png" alt="image-20220917194925939"></p>
+<p>当添加第3个分类变量时，可以通过对点着色（故称色调语义）和改变标记来显示分类变量，以突显每个类别。如图所示。</p>
+<p>由图可知，在产品开发部已经离职的员工中，员工平均每个月工作时间越短，对员工的评价分数较低，员工薪水也相对较低；对员工评价分数较高，员工薪水大多数处于中薪阶段，高薪的人员较少。说明员工平均月工作时间不仅影响企业对员工的评分高低，也可能影响员工薪水的高低。<strong>除此之外，读者还可以使用markers参数根据自身的需求为分组点设置自定义的标记。</strong></p>
+<h2 id="绘制折线图"><a href="#绘制折线图" class="headerlink" title="绘制折线图"></a>绘制折线图</h2><p>在seaborn库中，可以使用lineplot函数绘制折线图。默认情况下，会使用每个x值对应的多个y值的均值绘制折线，并显示该估计值的置信区间带。lineplot函数的使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.lineplot(x=<span class="literal">None</span>, y=<span class="literal">None</span>, hue=<span class="literal">None</span>, size=<span class="literal">None</span>, style=<span class="literal">None</span>, data=<span class="literal">None</span>, palette=<span class="literal">None</span>, hue_order=<span class="literal">None</span>, hue_norm=<span class="literal">None</span>, sizes=<span class="literal">None</span>, size_order=<span class="literal">None</span>, size_norm=<span class="literal">None</span>, dashes=<span class="literal">True</span>, markers=<span class="literal">None</span>, style_order=<span class="literal">None</span>, units=<span class="literal">None</span>, estimator=<span class="string">&#x27;mean&#x27;</span>, ci=<span class="number">95</span>, n_boot=<span class="number">1000</span>, seed=<span class="literal">None</span>, sort=<span class="literal">True</span>, err_style=<span class="string">&#x27;band&#x27;</span>, err_kws=<span class="literal">None</span>, legend=<span class="string">&#x27;auto&#x27;</span>, ax=<span class="literal">None</span>, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>lineplot函数的部分参数及其说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>x<strong><strong>，</strong></strong>y</strong></td>
+<td>接收array、str、series，表示输入变量、字符串应该是data中对应变量名，使用series将会在轴上显示名称。无默认值</td>
+</tr>
+<tr>
+<td><strong>data</strong></td>
+<td>接收DataFrame，表示用于绘图的数据集。默认为None</td>
+</tr>
+<tr>
+<td><strong>dashes</strong></td>
+<td>接收bool、list、dict，表示确定不同级别的style。默认为True</td>
+</tr>
+<tr>
+<td><strong>estimator</strong></td>
+<td>接收pandas方法、可调用函数、None。表示y在同一x级别的聚合方法。默认为mean</td>
+</tr>
+<tr>
+<td><strong>ci</strong></td>
+<td>接收int、sd、None，表示使用estimator参数聚合的置信区间大小，sd表示数据标准差。默认为95</td>
+</tr>
+<tr>
+<td><strong>n_boot</strong></td>
+<td>接收int，表示计算置信区间的数。默认为1000</td>
+</tr>
+<tr>
+<td><strong>sort</strong></td>
+<td>接收bool，表示按照x和y变量排序或出现顺序排序。默认为True</td>
+</tr>
+<tr>
+<td><strong>err_style</strong></td>
+<td>接收band、bars，表示是否用半透明误差带或离散误差棒绘制置信区间。默认为band</td>
+</tr>
+<tr>
+<td><strong>err_band</strong></td>
+<td>接收dict，表示用于控制误差线条的参数。默认为None</td>
+</tr>
+</tbody></table>
+<p>波士顿房价数据的字段说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>字段名称</strong></th>
+<th><strong>字段含义</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>犯罪率</strong></td>
+<td>波士顿城镇人均犯罪率</td>
+<td>0.00632</td>
+</tr>
+<tr>
+<td><strong>居住面积占比</strong></td>
+<td>住房占地面积超过25000平方英尺的住宅用地比例</td>
+<td>18.0</td>
+</tr>
+<tr>
+<td><strong>商业用地占比</strong></td>
+<td>每个城镇非零售业务的比例</td>
+<td>2.31</td>
+</tr>
+<tr>
+<td><strong>河流穿行</strong></td>
+<td>是否被Charles河流穿过，1表示是，0表示否</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>一氧化氮含量</strong></td>
+<td>一氧化氮浓度（每千万份）</td>
+<td>0.538</td>
+</tr>
+<tr>
+<td><strong>房间数</strong></td>
+<td>每间住宅的平均房间数</td>
+<td>6.575</td>
+</tr>
+<tr>
+<td><strong>住宅占比</strong></td>
+<td>早于1940年建造的住宅单位比例</td>
+<td>65.2</td>
+</tr>
+<tr>
+<td><strong>平均距离</strong></td>
+<td>距离5个就业中心区域的加权平均距离</td>
+<td>4.0900</td>
+</tr>
+<tr>
+<td><strong>可达性指数</strong></td>
+<td>径向高速公路的可达性指数</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>财产税</strong></td>
+<td>每1万美元的全额物业税率</td>
+<td>296</td>
+</tr>
+<tr>
+<td><strong>学生与老师占比</strong></td>
+<td>城镇中的学生与教师比例</td>
+<td>15.3</td>
+</tr>
+<tr>
+<td><strong>黑人指标</strong></td>
+<td>城镇中的黑人比例指标</td>
+<td>396.90</td>
+</tr>
+<tr>
+<td><strong>低收入人群</strong></td>
+<td>反映当地低收入人群占总人口的比例</td>
+<td>4.98</td>
+</tr>
+<tr>
+<td><strong>房屋价格</strong></td>
+<td>自住房屋价格的中位数（单位：1000美元）</td>
+<td>24.0</td>
+</tr>
+</tbody></table>
+<p>基于波士顿房价数据，绘制房间数和房屋价格的折线图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">boston = pd.read_csv(<span class="string">&#x27;./data/boston_house_prices.csv&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line">sns.lineplot(x=<span class="string">&#x27;房间数（间）&#x27;</span>, y=<span class="string">&#x27;房屋价格（千美元）&#x27;</span>, data=boston, ci=<span class="number">0</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;房间数与房屋价格&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917195638129.png" alt="image-20220917195638129"></p>
+<p>由图可知，折线具有较大的波动性，但整体呈现向上的趋势，可以大致认为当房间数相对较少时，房屋价格也相对较低；当房间数相对较多时，房屋价格逐渐升高。</p>
+<p>为分析IT部部门中员工工龄与评分的关系，基于人员离职率数据，绘制IT部部门员工工龄和年度评分折线图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IT = hr.iloc[hr[<span class="string">&#x27;部门&#x27;</span>].values==<span class="string">&#x27;IT部&#x27;</span>, :]</span><br><span class="line">sns.lineplot(x=<span class="string">&#x27;工龄（年）&#x27;</span>, y=<span class="string">&#x27;评分&#x27;</span>, hue=<span class="string">&#x27;离职&#x27;</span>, data=IT, ci=<span class="number">0</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;工龄与上年度评价&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917195748122.png" alt="image-20220917195748122"></p>
+<p>由图可知，在离职为1的员工中，工龄在2<del>3时，评分逐渐降低；工龄在3</del>5时，员工评分随着工龄的增大而增大；工龄在5以上时，评分又相对降低。在离职为0的员工中，工龄在6到7之间的员工评分有大幅度的变动，其余工龄阶段的员工评分在0.7上下。</p>
+<h2 id="绘制热力图"><a href="#绘制热力图" class="headerlink" title="绘制热力图"></a>绘制热力图</h2><p>矩阵图是一种通过多因素综合思考，探索问题的方法。从问题事项中寻找成对的因素群，分别排列成行和列，从而找出其中行与列的相关性或相关程度大小。使用矩阵图可以同时评估多个变量之间的相关关系，常见的矩阵图为热力图。</p>
+<p>在seaborn库中，可以使用heatmap函数绘制热力图。heatmap函数的使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.heatmap(data, vmin=<span class="literal">None</span>, vmax=<span class="literal">None</span>, cmap=<span class="literal">None</span>, center=<span class="literal">None</span>, robust=<span class="literal">False</span>, annot=<span class="literal">None</span>, fmt=<span class="string">&#x27;.2g&#x27;</span>, annot_kws=<span class="literal">None</span>, linewidths=<span class="number">0</span>, linecolor=<span class="string">&#x27;white&#x27;</span>, cbar=<span class="literal">True</span>, cbar_kws=<span class="literal">None</span>, cbar_ax=<span class="literal">None</span>, square=<span class="literal">False</span>, xticklabels=<span class="string">&#x27;auto&#x27;</span>, yticklabels=<span class="string">&#x27;auto&#x27;</span>, mask=<span class="literal">None</span>, ax=<span class="literal">None</span>, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>heatmap函数的主要参数及说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>data</strong></td>
+<td>接收可转换为ndarray的二维矩形数据集，表示用于绘图的数据集。无默认值</td>
+</tr>
+<tr>
+<td><strong>vmin<strong><strong>，</strong></strong>vmax</strong></td>
+<td>接收float，表示颜色映射的值得范围。默认为None</td>
+</tr>
+<tr>
+<td><strong>cmap</strong></td>
+<td>接收色彩映射或颜色列表，表示数值到颜色空间的映射。默认为None</td>
+</tr>
+<tr>
+<td><strong>center</strong></td>
+<td>接收float，表示以0为中心发散颜色。默认为None</td>
+</tr>
+<tr>
+<td><strong>robust</strong></td>
+<td>接收bool，如果为True且vmin或vmax不存在，则使用鲁棒分位数表示映射范围。默认为False</td>
+</tr>
+<tr>
+<td><strong>annot</strong></td>
+<td>接收bool或矩形数据集，表示是否在每个单元格显示数值。默认为None</td>
+</tr>
+<tr>
+<td><strong>fmt</strong></td>
+<td>接收str，表示传递给FacetGrid的其他参数。默认为.2g</td>
+</tr>
+<tr>
+<td><strong>linewidths</strong></td>
+<td>接收float，表示划分每个单元的线宽。默认为0</td>
+</tr>
+<tr>
+<td><strong>linecolor</strong></td>
+<td>接收颜色str，表示划分每个单元的线条颜色。默认为white</td>
+</tr>
+<tr>
+<td><strong>square</strong></td>
+<td>接收bool，表示是否使每个单元格为方形。默认为False</td>
+</tr>
+</tbody></table>
+<p>基于波士顿房价数据绘制热力图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">plt.rcParams[<span class="string">&#x27;axes.unicode_minus&#x27;</span>] = <span class="literal">False</span></span><br><span class="line">corr = boston.corr()  <span class="comment"># 特征的相关系数矩阵</span></span><br><span class="line">sns.heatmap(corr)</span><br><span class="line">plt.title(<span class="string">&#x27;特征矩阵热力图&#x27;</span>)</span><br><span class="line">plt.savefig(<span class="string">&quot;1.png&quot;</span>,dpi=<span class="number">200</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917200100011.png" alt="image-20220917200100011"></p>
+<p>为了更加细节的显示出数据特点，可以添加数据标记，即设置参数annot&#x3D;True，辅助增强显示效果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">10</span>, <span class="number">10</span>))</span><br><span class="line">sns.heatmap(corr, annot=<span class="literal">True</span>, fmt=<span class="string">&#x27;.2f&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;特征矩阵热力图&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/%E4%B8%8B%E8%BD%BD.png" alt="下载"></p>
+<h2 id="绘制矩阵网格图"><a href="#绘制矩阵网格图" class="headerlink" title="绘制矩阵网格图"></a>绘制矩阵网格图</h2><p>当数据增加到中等维度甚至更多时，在一个绘图面绘制图形会显得相对“拥挤”。而将数据分成不同子集，在多个绘图面分别绘制图形将是一个较好的方法，这种绘图方式被称为网格图。Matplotlib库能够较好的使用子图，用于“手动”分组数据并绘制多个面图形，seaoren库在Matplotlib库的基础上直接使用数据集“自动”分组绘制网格图。但是，seaoren库绘制网格图要求数据必须是整洁的数据框形式。</p>
+<p>PairGrid类可用于绘制数据中程度关系的网格图。PairGrid类将数据集中的每个变量映射到多个网格中的列和行，并可以使用不同的绘图函数绘制上三角和下三角的双变量图，显示数据集中每个变量的两两之间的相关关系。此外，还可以在对角线上显示每个变量的边缘分布。PairGrid类的基础使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.PairGrid(data, hue=<span class="literal">None</span>, hue_order=<span class="literal">None</span>, palette=<span class="literal">None</span>, hue_kws=<span class="literal">None</span>, <span class="built_in">vars</span>=<span class="literal">None</span>, x_vars=<span class="literal">None</span>, y_vars=<span class="literal">None</span>, corner=<span class="literal">False</span>, diag_sharey=<span class="literal">True</span>, height=<span class="number">2.5</span>, aspect=<span class="number">1</span>, layout_pad=<span class="number">0.5</span>, despine=<span class="literal">True</span>, dropna=<span class="literal">True</span>, size=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>PairGrid类的部分参数及其说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>hue_kws</strong></td>
+<td>接收param  dict，表示设置每个子图绘图元素的颜色变化（如散点图的标记颜色）。默认为None</td>
+</tr>
+<tr>
+<td><strong>vars</strong></td>
+<td>接收list，表示data中使用变量，否则使用所用numeric类型变量。默认为None</td>
+</tr>
+<tr>
+<td><strong>{x<strong><strong>，</strong></strong>y}_vars</strong></td>
+<td>接收list，表示选择行和列变量，即自定义图形。默认为None</td>
+</tr>
+<tr>
+<td><strong>dropna</strong></td>
+<td>接收bool，表示是否在删除含有缺失值得样本。默认为True</td>
+</tr>
+</tbody></table>
+<p>PairGrid类同样在创建完网格图对象后，需要在每个绘图面绘制子图。PairGrid类中可使用以下5种函数进行区域绘图。</p>
+<ul>
+<li>map函数可在所有区域绘制图形。</li>
+<li>map_lower与map_upper函数可分别在下三角与上三角区域绘制图形。</li>
+<li>map_diag函数与map_offdiag函数可分别在对角线和非对角线区域绘制图形。</li>
+</ul>
+<p>基于波士顿房价数据绘制犯罪率、一氧化氮含量、房间数与房屋价格两两之间的相关性。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">g = sns.PairGrid(boston, <span class="built_in">vars</span>=[<span class="string">&#x27;犯罪率&#x27;</span>, <span class="string">&#x27;一氧化氮含量（ppm）&#x27;</span>, <span class="string">&#x27;房间数（间）&#x27;</span>, <span class="string">&#x27;房屋价格（千美元）&#x27;</span>])</span><br><span class="line">g = g.<span class="built_in">map</span>(plt.scatter)</span><br><span class="line">plt.suptitle(<span class="string">&#x27;矩阵网格图&#x27;</span>, verticalalignment=<span class="string">&#x27;bottom&#x27;</span> , y=<span class="number">1</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/%E4%B8%8B%E8%BD%BD%20(1).png" alt="下载 (1)"></p>
+<p>由图可知，房间数目与房价呈正相关，犯罪率与房价呈负相关。</p>
+<p>PairGrid类可以用hue参数表示第3各类别变量。用销售部已离职的员工数据绘制不同颜色的数据子集。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 提取部门为销售部，离职为1的数据</span></span><br><span class="line">sell = hr.iloc[(hr[<span class="string">&#x27;部门&#x27;</span>].values==<span class="string">&#x27;销售部&#x27;</span>) &amp; (hr[<span class="string">&#x27;离职&#x27;</span>].values==<span class="number">1</span>), :]</span><br><span class="line">g = sns.PairGrid(sell,</span><br><span class="line">                 <span class="built_in">vars</span>=[<span class="string">&#x27;满意度&#x27;</span>, <span class="string">&#x27;评分&#x27;</span>, <span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>],</span><br><span class="line">                 hue=<span class="string">&#x27;薪资&#x27;</span>, palette=<span class="string">&#x27;Set3&#x27;</span>)</span><br><span class="line">g = g.map_diag(sns.kdeplot)</span><br><span class="line">g = g.map_offdiag(plt.scatter)</span><br><span class="line">plt.suptitle(<span class="string">&#x27;不同颜色的矩阵网格图&#x27;</span>, verticalalignment=<span class="string">&#x27;bottom&#x27;</span> , y=<span class="number">1</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917201153358.png" alt="image-20220917201153358"></p>
+<p>在网格图中，满意度和评分表示了行和列，并使用了不同的颜色展示了薪资的不同类别</p>
+<h2 id="绘制关系网格组合图"><a href="#绘制关系网格组合图" class="headerlink" title="绘制关系网格组合图"></a>绘制关系网格组合图</h2><p>relplot函数是基于FacetGrid类的，可以实现统一访scatterplot函数和lineplot函数绘制多图网格的关系图。relplot函数的使用格式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.relplot(x=<span class="literal">None</span>, y=<span class="literal">None</span>, hue=<span class="literal">None</span>, size=<span class="literal">None</span>, style=<span class="literal">None</span>, data=<span class="literal">None</span>, row=<span class="literal">None</span>, col=<span class="literal">None</span>, col_wrap=<span class="literal">None</span>, row_order=<span class="literal">None</span>, col_order=<span class="literal">None</span>, palette=<span class="literal">None</span>, hue_order=<span class="literal">None</span>, hue_norm=<span class="literal">None</span>, sizes=<span class="literal">None</span>, size_order=<span class="literal">None</span>, size_norm=<span class="literal">None</span>, markers=<span class="literal">None</span>, dashes=<span class="literal">None</span>, style_order=<span class="literal">None</span>, legend=<span class="string">&#x27;auto&#x27;</span>, kind=<span class="string">&#x27;scatter&#x27;</span>, height=<span class="number">5</span>, aspect=<span class="number">1</span>, facet_kws=<span class="literal">None</span>, units=<span class="literal">None</span>, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>relplot函数通过kind参数选择要使用的绘图函数，通过col和row参数控制网格图的行列。relplot函数的部分参数及说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>x<strong><strong>，</strong></strong>y</strong></td>
+<td>接收data中变量名。只能是定量变量。默认为None</td>
+</tr>
+<tr>
+<td><strong>data</strong></td>
+<td>接收DataFrame，表示用于绘图的数据集。默认为None</td>
+</tr>
+<tr>
+<td><strong>row<strong><strong>，</strong></strong>col</strong></td>
+<td>接收data中变量名，表示传入分类变量，决定网格图的分面。默认为None</td>
+</tr>
+<tr>
+<td><strong>row_order<strong><strong>，</strong></strong>col_order</strong></td>
+<td>接收list，表示传入分类变量类别名称列表并以此为顺序。默认为None</td>
+</tr>
+<tr>
+<td><strong>kind</strong></td>
+<td>接收scatter、line，表示选择绘图函数。默认为scatter</td>
+</tr>
+<tr>
+<td><strong>height</strong></td>
+<td>接收scalar，表示网格图的高度。默认为5</td>
+</tr>
+<tr>
+<td><strong>aspect</strong></td>
+<td>接收scalar，表示网格图的宽度。默认为1</td>
+</tr>
+<tr>
+<td><strong>facet_kws</strong></td>
+<td>接收dict，表示传递给FacetGrid的其他参数。默认为None</td>
+</tr>
+</tbody></table>
+<p>人员离职率数据，根据销售部已离职的员工数据，通过relplot函数绘制单构面散点图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sell = hr.iloc[(hr[<span class="string">&#x27;部门&#x27;</span>].values==<span class="string">&#x27;销售部&#x27;</span>) &amp; (hr[<span class="string">&#x27;离职&#x27;</span>].values==<span class="number">1</span>), :]</span><br><span class="line">sns.relplot(x=<span class="string">&#x27;满意度&#x27;</span>, y=<span class="string">&#x27;评分&#x27;</span>, hue=<span class="string">&#x27;薪资&#x27;</span>,</span><br><span class="line">            data=sell)</span><br><span class="line">plt.title(<span class="string">&#x27;满意度水平与上年度评价&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917201541079.png" alt="image-20220917201541079"></p>
+<p>由图可知，在销售部部门且已经离职的员工中，人员评估分数越高，员工对公司的满意度越高。</p>
+<p>根据部门为IT部的数据，传入分类变量薪资和工作事故到col和row中，绘制网格图，设置col_wrap参数可以控制列数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sns.relplot(x=<span class="string">&#x27;满意度&#x27;</span>, y=<span class="string">&#x27;评分&#x27;</span>, hue=<span class="string">&#x27;5年内升职&#x27;</span>, row=<span class="string">&#x27;薪资&#x27;</span>,</span><br><span class="line">            col=<span class="string">&#x27;工作事故&#x27;</span>, data=IT)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line">sns.relplot(x=<span class="string">&#x27;满意度&#x27;</span>, y=<span class="string">&#x27;评分&#x27;</span>, hue=<span class="string">&#x27;5年内升职&#x27;</span>, col=<span class="string">&#x27;工作事故&#x27;</span>,</span><br><span class="line">            col_wrap=<span class="number">1</span>, data=IT)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/%E4%B8%8B%E8%BD%BD%20(2).png" alt="下载 (2)"></p>
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/%E4%B8%8B%E8%BD%BD%20(3).png" alt="下载 (3)"></p>
+<h1 id="绘制分类图"><a href="#绘制分类图" class="headerlink" title="绘制分类图"></a>绘制分类图</h1><p>在seaborn库中的分类图将分类变量每个级别的每个观察结果显示出来，显示每个观察分布的抽象表示，即使用分类数据进行绘图。分类图包括了条形图、单变量分布图、分类散点图、增强箱线图和分类网格组合图。</p>
+<h2 id="绘制条形图"><a href="#绘制条形图" class="headerlink" title="绘制条形图"></a>绘制条形图</h2><p>在seaborn库中，可以使用barplot函数绘制条形图。barplot函数的基本使用格式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.barplot(x=<span class="literal">None</span>, y=<span class="literal">None</span>, hue=<span class="literal">None</span>, data=<span class="literal">None</span>, order=<span class="literal">None</span>, hue_order=<span class="literal">None</span>, estimator=&lt;function mean&gt;, ci=<span class="number">95</span>, n_boot=<span class="number">1000</span>, units=<span class="literal">None</span>, seed=<span class="literal">None</span>, orient=<span class="literal">None</span>, color=<span class="literal">None</span>, palette=<span class="literal">None</span>, saturation=<span class="number">0.75</span>, errcolor=<span class="string">&#x27;.26&#x27;</span>, errwidth=<span class="literal">None</span>, capsize=<span class="literal">None</span>, dodge=<span class="literal">True</span>, ax=<span class="literal">None</span>, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>barplot函数的常用参数及其说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>x<strong><strong>，</strong></strong>y</strong></td>
+<td>接收array、str、series，表示输入变量、字符串应该是data中对应变量名，使用series将会在轴上显示名称。无默认值</td>
+</tr>
+<tr>
+<td><strong>hue</strong></td>
+<td>接收data中变量名，表示传入分类变量，以颜色分类。默认为None</td>
+</tr>
+<tr>
+<td><strong>data</strong></td>
+<td>接收DataFrame、array或list  of arrays，表示用于绘图的数据集。默认为None</td>
+</tr>
+<tr>
+<td><strong>order</strong></td>
+<td>接收lists  of strings，表示绘制分类级别。默认值为None</td>
+</tr>
+<tr>
+<td><strong>color</strong></td>
+<td>接收特定str或包含颜色字符串的array，表示所有元素的颜色或渐变调色板的种子。默认为None</td>
+</tr>
+<tr>
+<td><strong>palette</strong></td>
+<td>接收调色板、list或dict，表示用于改变默认绘图颜色。默认为None</td>
+</tr>
+</tbody></table>
+<p>基于人员离职率数据，使用barplot函数绘制各部门人员总数条形图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 代码4-29</span></span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">boston = pd.read_csv(<span class="string">&#x27;./data/boston_house_prices.csv&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line">hr = pd.read_csv(<span class="string">&#x27;./data/hr.csv&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用seaborn库绘图</span></span><br><span class="line">sns.set_style(<span class="string">&#x27;whitegrid&#x27;</span>, &#123;<span class="string">&#x27;font.sans-serif&#x27;</span>:[<span class="string">&#x27;simhei&#x27;</span>, <span class="string">&#x27;Arial&#x27;</span>]&#125;)</span><br><span class="line"><span class="comment"># 设置中文字体</span></span><br><span class="line">plt.rcParams[<span class="string">&#x27;font.sans-serif&#x27;</span>] = [<span class="string">&#x27;SimHei&#x27;</span>]</span><br><span class="line"><span class="comment"># 设置正常显示负号</span></span><br><span class="line">plt.rcParams[<span class="string">&#x27;axes.unicode_minus&#x27;</span>]=<span class="literal">False</span></span><br><span class="line"></span><br><span class="line">count = hr[<span class="string">&#x27;部门&#x27;</span>].value_counts()</span><br><span class="line"></span><br><span class="line">sns.barplot(x=count.index, y=count.values)</span><br><span class="line">plt.xticks(rotation=<span class="number">70</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;部门&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;总数&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;各部门人数对比&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917203314608.png" alt="image-20220917203314608"></p>
+<p>由图可知，销售部部门的人数相对较多，管理部部门的人数相对较少。</p>
+<p>当条形图需要显示每个类别中的观察数量，而不是计算第二个变量的统计量时，可以使用计数图实现。计数图可以认为是应用于到分类变量，比较类别间计数差的直方图。</p>
+<p>在seaborn库中，可以使用countplot函数绘制计数图。countplot函数的使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.countplot(x=<span class="literal">None</span>, y=<span class="literal">None</span>, hue=<span class="literal">None</span>, data=<span class="literal">None</span>, order=<span class="literal">None</span>, hue_order=<span class="literal">None</span>, orient=<span class="literal">None</span>, color=<span class="literal">None</span>, palette=<span class="literal">None</span>, saturation=<span class="number">0.75</span>, dodge=<span class="literal">True</span>, ax=<span class="literal">None</span>, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>countplot函数的常用参数及其说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>x<strong><strong>，</strong></strong>y</strong></td>
+<td>接收array、str、series，表示输入变量、字符串应该是data中对应变量名，使用series将会在轴上显示名称。无默认值</td>
+</tr>
+<tr>
+<td><strong>hue</strong></td>
+<td>接收data中变量名，表示传入分类变量，以颜色分类。默认为None</td>
+</tr>
+<tr>
+<td><strong>data</strong></td>
+<td>接收DataFrame，表示用于绘图的数据集。默认为None</td>
+</tr>
+<tr>
+<td><strong>color</strong></td>
+<td>接收特定str或包含颜色字符串的array，表示图形的颜色。默认为None</td>
+</tr>
+<tr>
+<td><strong>palette</strong></td>
+<td>接收调色板，表示用于改变默认绘图颜色。默认为None</td>
+</tr>
+</tbody></table>
+<p>countplot函数不能同时输入x与y参数，只能分开输入在不同轴上显示，且计数图没有误差棒。基于人员离职率数据绘制x轴与y轴显示数据的计数图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">8</span>, <span class="number">4</span>))</span><br><span class="line">plt.subplot(<span class="number">121</span>)</span><br><span class="line">sns.countplot(x=<span class="string">&#x27;工龄（年）&#x27;</span>, data=hr)</span><br><span class="line">plt.title(<span class="string">&#x27;x轴显示数据的计数图&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;计数&#x27;</span>)</span><br><span class="line">plt.subplot(<span class="number">122</span>)</span><br><span class="line">sns.countplot(y=<span class="string">&#x27;工龄（年）&#x27;</span>, data=hr)</span><br><span class="line">plt.title(<span class="string">&#x27;y轴显示数据的计数图&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;计数&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917203702156.png" alt="image-20220917203702156"></p>
+<p>由图可知，不同工龄的员工数量，其中工龄为3的员工数量最多，其次是工龄为2和4的，工龄为7、8、10的员工数量都相对较少，说明了公司员工在工作到一定时间后有离职的情况。</p>
+<p>根据某个类别，绘制多酚类嵌套的计数图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sns.countplot(x=<span class="string">&#x27;5年内升职&#x27;</span>, hue=<span class="string">&#x27;薪资&#x27;</span>, data=hr, palette=<span class="string">&#x27;Set2&#x27;</span>)</span><br><span class="line">plt.suptitle(<span class="string">&#x27;多变量散点图&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;总数&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/" alt="image-20220917203923193"></p>
+<p>由图可知，大多数不同薪资的员工在5年内均未有升职的情况。</p>
+<h2 id="绘制单变量分布图"><a href="#绘制单变量分布图" class="headerlink" title="绘制单变量分布图"></a>绘制单变量分布图</h2><p>直方图是一种对数据分布情况的图形表示，是一种二维统计图表，它的两个坐标分别是统计样本和该样本对应的某个属性的度量，以长条图（bar）的形式具体表现。直方图即为单变量分布图。在seaborn库中，可以使用distplot函数绘制单变量分布。distplot函数的使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.distplot(a=<span class="literal">None</span>, bins=<span class="literal">None</span>, hist=<span class="literal">True</span>, kde=<span class="literal">True</span>, rug=<span class="literal">False</span>, fit=<span class="literal">None</span>, hist_kws=<span class="literal">None</span>, kde_kws=<span class="literal">None</span>, rug_kws=<span class="literal">None</span>, fit_kws=<span class="literal">None</span>, color=<span class="literal">None</span>, vertical=<span class="literal">False</span>, norm_hist=<span class="literal">False</span>, axlabel=<span class="literal">None</span>, label=<span class="literal">None</span>, ax=<span class="literal">None</span>, x=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>distplot函数的部分参数及其说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>a</strong></td>
+<td>接收series、list、array，表示观察的数据。如果是具有name属性的series对象，则该名称将用于标记数据轴。默认为None</td>
+</tr>
+<tr>
+<td><strong>bins</strong></td>
+<td>接收int，表示长方形数目，如hist函数bins参数。默认为None</td>
+</tr>
+<tr>
+<td><strong>hist</strong></td>
+<td>接收bool，表示是否绘制直方图。默认为True</td>
+</tr>
+<tr>
+<td><strong>kde</strong></td>
+<td>接收bool，表示是否绘制高斯核密度估计。默认为True</td>
+</tr>
+<tr>
+<td><strong>rug</strong></td>
+<td>接收bool，表示是否添加分布观测刻度。默认为False</td>
+</tr>
+<tr>
+<td><strong>fit</strong></td>
+<td>接收随机变量对象，用于拟合分布。默认为None</td>
+</tr>
+<tr>
+<td><strong>color</strong></td>
+<td>接收特定str，表示除拟合曲线外的所有内容颜色。默认为None</td>
+</tr>
+<tr>
+<td><strong>{hist<strong><strong>，</strong></strong>kde<strong><strong>，</strong></strong>rug<strong><strong>，</strong></strong>fit}_kws</strong></td>
+<td>接收字典，表示底层绘图函数的关键字参数。默认为None</td>
+</tr>
+</tbody></table>
+<p>基于波士顿房价数据绘制单变量分布图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sns.distplot(boston[<span class="string">&#x27;财产税&#x27;</span>], kde=<span class="literal">False</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;单变量的分布图&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;数量&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917204356369.png" alt="image-20220917204356369"></p>
+<p>由图可知，每1万美元的全额物业税率，即财产税，主要集中在200<del>400和600</del>700区间，且在200~400区间的数量相关较大。</p>
+<h2 id="绘制分类散点图"><a href="#绘制分类散点图" class="headerlink" title="绘制分类散点图"></a>绘制分类散点图</h2><h3 id="stripplot函数"><a href="#stripplot函数" class="headerlink" title="stripplot函数"></a>stripplot函数</h3><p>使用stripplot函数绘制分布散点图，是显示分类变量级别中某些定量变量的值的一种简单方法。分类散点图可以单独的显示，但是有时候也可以作为其他分类图的辅助，用于显示所有的观察结果和基本分布。stripplot函数的使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.stripplot(x=<span class="literal">None</span>, y=<span class="literal">None</span>, hue=<span class="literal">None</span>, data=<span class="literal">None</span>, order=<span class="literal">None</span>, hue_order=<span class="literal">None</span>, jitter=<span class="literal">True</span>, dodge=<span class="literal">False</span>, orient=<span class="literal">None</span>, color=<span class="literal">None</span>, palette=<span class="literal">None</span>, size=<span class="number">5</span>, edgecolor=<span class="string">&#x27;gray&#x27;</span>, linewidth=<span class="number">0</span>, ax=<span class="literal">None</span>, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>stripplot函数的部分参数及说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>x<strong><strong>，</strong></strong>y<strong><strong>，</strong></strong>hue</strong></td>
+<td>接收data中变量名，表示选入的绘图变量，hue传入分类变量，以颜色分类。默认为None</td>
+</tr>
+<tr>
+<td><strong>data</strong></td>
+<td>接收DataFrame、array、list、series，表示用于绘图的数据集。默认为None</td>
+</tr>
+<tr>
+<td><strong>order<strong><strong>，</strong></strong>hue_order</strong></td>
+<td>接收str、list，表示指定绘图分类级别。默认为None</td>
+</tr>
+<tr>
+<td><strong>jitter</strong></td>
+<td>接收float、True、1，表示添加均匀随机噪声（仅改变图形）优化图形显示。默认为True</td>
+</tr>
+<tr>
+<td><strong>dodge</strong></td>
+<td>接收bool，表示当使用分类嵌套时是否沿着分类轴分离。默认为False</td>
+</tr>
+<tr>
+<td><strong>orient</strong></td>
+<td>接收v、h，表示图形的方向。默认为None</td>
+</tr>
+</tbody></table>
+<p><strong>绘制简单水平分布散点图来分析销售部已离职员工每月平均工作小时数</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sale = hr.iloc[(hr[<span class="string">&#x27;部门&#x27;</span>].values==<span class="string">&#x27;销售部&#x27;</span>) &amp; (hr[<span class="string">&#x27;离职&#x27;</span>].values==<span class="number">1</span>), :]</span><br><span class="line">sns.stripplot(x=sale[<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>])</span><br><span class="line">plt.title(<span class="string">&#x27;简单水平分布散点图&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917204744404.png" alt="image-20220917204744404"></p>
+<p>由图可知，销售部已离职的员工每个月的工作时间大致可分为两个时间段，分别是125-165小时和210-250小时。</p>
+<p>通过分类变量对条带进行分组，并添加随机噪声抖动。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 提取离职为1的数据</span></span><br><span class="line">hr1 = hr.iloc[hr[<span class="string">&#x27;离职&#x27;</span>].values==<span class="number">1</span>, :]</span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>, <span class="number">5</span>))</span><br><span class="line">plt.subplot(<span class="number">121</span>)</span><br><span class="line">plt.xticks(rotation=<span class="number">70</span>)</span><br><span class="line">sns.stripplot(x=<span class="string">&#x27;部门&#x27;</span>, y=<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>, data=hr1)  <span class="comment"># 默认添加随机噪声</span></span><br><span class="line">plt.title(<span class="string">&#x27;默认随机噪声抖动&#x27;</span>)</span><br><span class="line">plt.subplot(<span class="number">122</span>)</span><br><span class="line">plt.xticks(rotation=<span class="number">70</span>)</span><br><span class="line">sns.stripplot(x=<span class="string">&#x27;部门&#x27;</span>, y=<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>,</span><br><span class="line">                 data=hr1, jitter=<span class="literal">False</span>)  <span class="comment"># 不添加随机噪声</span></span><br><span class="line">plt.title(<span class="string">&#x27;无随机噪声抖动&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917205018724.png" alt="image-20220917205018724"></p>
+<p>添加噪声抖动与不添加噪声抖动的图形不一致，没有添加噪声的图形相对较平缓。</p>
+<p>绘制图形来分析高新在职的员工在5年内是否晋升与平均每月工作时长的关系，并使用多分类功能，将一个分类变量嵌套进另一个分类变量。以颜色显示第二个分类条件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 提取高薪在职的数据</span></span><br><span class="line">hr2 = hr.iloc[(hr[<span class="string">&#x27;薪资&#x27;</span>].values==<span class="string">&#x27;高&#x27;</span>) &amp; (hr[<span class="string">&#x27;离职&#x27;</span>].values==<span class="number">0</span>), :]</span><br><span class="line">sns.stripplot(x=<span class="string">&#x27;5年内升职&#x27;</span>, y=<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>,</span><br><span class="line">              hue=<span class="string">&#x27;部门&#x27;</span>, data=hr2, jitter=<span class="literal">True</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;前5年是否晋升与平均每月工作时长&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917205343874.png" alt="image-20220917205343874"></p>
+<p>由图可知，在高薪在职的员工中，近5年得到晋升的员工相对较少，大多数部门的员工没有得到晋升，这样容易导致企业员工的流动，增加企业员工的离职率。</p>
+<p>修改dodge参数，使变量沿分类轴方向分类，而不是覆盖重叠。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">10</span>, <span class="number">13</span>))</span><br><span class="line">plt.subplot(<span class="number">211</span>)</span><br><span class="line">plt.xticks(rotation=<span class="number">70</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;不同部门的平均每月工作时长&#x27;</span>)</span><br><span class="line">sns.stripplot(x=<span class="string">&#x27;部门&#x27;</span>, y=<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>, hue=<span class="string">&#x27;5年内升职&#x27;</span>, data=hr2)</span><br><span class="line">plt.subplot(<span class="number">212</span>)</span><br><span class="line">plt.xticks(rotation=<span class="number">70</span>)</span><br><span class="line">sns.stripplot(x=<span class="string">&#x27;部门&#x27;</span>, y=<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>, hue=<span class="string">&#x27;5年内升职&#x27;</span>, </span><br><span class="line">              data=hr2, dodge=<span class="literal">True</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/%E4%B8%8B%E8%BD%BD%20(2).png" alt="下载 (2)"> </p>
+<p>由运行结果可知，修改dodge参数之后，变量沿分类轴方向分类，而不是覆盖重叠，这将会使分类更加清晰。</p>
+<h3 id="swarmplot函数"><a href="#swarmplot函数" class="headerlink" title="swarmplot函数"></a>swarmplot函数</h3><p><strong>stripplot函数添加随机噪声增加图形抖动以及将变量沿着分类轴绘制后，仍然有重叠的可能。而使用swarmplot函数可以避免这种情况，能够绘制出具有非重叠点的分类散点图。</strong>swarmplot函数的使用格式如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.swarmplot(x=None, y=None, hue=None, data=None, order=None, hue_order=None, dodge=False, orient=None, color=None, palette=None, size=5, edgecolor=&#x27;gray&#x27;, linewidth=0, ax=None, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>swarmplot函数和stripplot函数在参数上基本一致，只是swarmplot函数缺少了jitter函数。因为swarmplot函数显示的是分布密度，所以不需要添加抖动项。</p>
+<p>基于人员离职率数据，根据高薪在职的员工数据，使用swarmplot函数绘制简单的分布密度散点图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sns.swarmplot(x=<span class="string">&#x27;部门&#x27;</span>, y=<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>, data=hr2)</span><br><span class="line">plt.xticks(rotation=<span class="number">70</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;不同部门的平均每月工作时长&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917205907141.png" alt="image-20220917205907141"></p>
+<p>传入hue参数添加多个嵌套的分类变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sns.swarmplot(x=<span class="string">&#x27;部门&#x27;</span>, y=<span class="string">&#x27;每月平均工作小时数（小时）&#x27;</span>,</span><br><span class="line">                 hue=<span class="string">&#x27;5年内升职&#x27;</span>, data=hr2)</span><br><span class="line">plt.xticks(rotation=<span class="number">30</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;不同部门的平均每月工作时长&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220917210013445.png" alt="image-20220917210013445"></p>
+<h2 id="绘制增强散点图"><a href="#绘制增强散点图" class="headerlink" title="绘制增强散点图"></a>绘制增强散点图</h2><p>传统的箱线图对四分位数以外的数据信息提供很少，当数据量变得很大时，会显示大量极端值，忽略了部分信息，使用增强箱线图能较好解决这两个问题。增强箱线图类似于绘制分布的非参数表示的箱形图，其中所有特征对应于实际值。它通过绘制更多的分位数，提供了有关分布形状的更多信息，特别是在尾部。</p>
+<p>在seaborn库中，可以使用boxenplot函数绘制增强箱线图。boxenplot函数的使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.boxenplot(x=<span class="literal">None</span>, y=<span class="literal">None</span>, hue=<span class="literal">None</span>, data=<span class="literal">None</span>, order=<span class="literal">None</span>, hue_order=<span class="literal">None</span>, orient=<span class="literal">None</span>, color=<span class="literal">None</span>, palette=<span class="literal">None</span>, saturation=<span class="number">0.75</span>, width=<span class="number">0.8</span>, dodge=<span class="literal">True</span>, k_depth=<span class="string">&#x27;tukey&#x27;</span>, linewidth=<span class="literal">None</span>, scale=<span class="string">&#x27;exponential&#x27;</span>, outlier_prop=<span class="number">0.007</span>, trust_alpha=<span class="number">0.05</span>, showfliers=<span class="literal">True</span>, ax=<span class="literal">None</span>, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>boxenplot函数的常用参数及其说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>x<strong><strong>，</strong></strong>y</strong></td>
+<td>接收array、str、series，表示输入变量、字符串应该是data中对应变量名，使用series将会在轴上显示名称。无默认值</td>
+</tr>
+<tr>
+<td><strong>data</strong></td>
+<td>接收DataFrame，表示用于绘图的数据集。默认为None</td>
+</tr>
+<tr>
+<td><strong>orient</strong></td>
+<td>接收v或h，表示绘图的方向（垂直或水平），默认为None</td>
+</tr>
+<tr>
+<td><strong>k_depth</strong></td>
+<td>接收proportion、tukey、trustworthy，表示不同的箱盒数量，被扩展的比例。默认为tukey</td>
+</tr>
+<tr>
+<td><strong>scale</strong></td>
+<td>接收linear、exponential、area，表示显示箱盒宽度的方法。默认为exponential</td>
+</tr>
+<tr>
+<td><strong>ax</strong></td>
+<td>接收series，表示轴对象以绘制图形，否则使用当前轴。默认为None</td>
+</tr>
+</tbody></table>
+<p>波士顿房价数据绘制普通箱线图与增强箱线图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">fig, axes = plt.subplots(<span class="number">1</span>, <span class="number">2</span>, figsize=(<span class="number">8</span>, <span class="number">4</span>))</span><br><span class="line">axes[<span class="number">0</span>].set_title(<span class="string">&#x27;普通箱线图&#x27;</span>)</span><br><span class="line">boston[<span class="string">&#x27;房间数(取整)&#x27;</span>] = boston[<span class="string">&#x27;房间数（间）&#x27;</span>].<span class="built_in">map</span>(math.floor)  <span class="comment"># 对房间数取整</span></span><br><span class="line">sns.boxplot(x=<span class="string">&#x27;房间数(取整)&#x27;</span>, y=<span class="string">&#x27;房屋价格（千美元）&#x27;</span>, </span><br><span class="line">            data=boston, orient=<span class="string">&#x27;v&#x27;</span>, ax=axes[<span class="number">0</span>])  <span class="comment"># 普通</span></span><br><span class="line">axes[<span class="number">1</span>].set_title(<span class="string">&#x27;增强箱线图&#x27;</span>)</span><br><span class="line">sns.boxenplot(x=<span class="string">&#x27;房间数(取整)&#x27;</span>, y=<span class="string">&#x27;房屋价格（千美元）&#x27;</span>, </span><br><span class="line">              data=boston, orient=<span class="string">&#x27;v&#x27;</span>, ax=axes[<span class="number">1</span>])  <span class="comment"># 增强</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220918160335199.png" alt="image-20220918160335199"></p>
+<p>由图可知，房间数目与房价有密切关系，房间数目少，房价低；房间数目多，则房价就明显升高。增强箱线图显示了更广的分位数，并通过宽度展示出对应的分布，从而接纳了更多的异常值信息，减少了信息损失。</p>
+<h2 id="绘制分类网格组合图"><a href="#绘制分类网格组合图" class="headerlink" title="绘制分类网格组合图"></a>绘制分类网格组合图</h2><p>分类网格组合图可在数据集中绘制成对关系。pairplot函数将构建一个轴网络，以便于每一个数值变量映射到多个轴的网格中的列和行。</p>
+<p>pairplot函数的使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.pairplot(data, hue=<span class="literal">None</span>, hue_order=<span class="literal">None</span>, palette=<span class="literal">None</span>, <span class="built_in">vars</span>=<span class="literal">None</span>, x_vars=<span class="literal">None</span>, y_vars=<span class="literal">None</span>, kind=<span class="string">&#x27;scatter&#x27;</span>, diag_kind=<span class="string">&#x27;auto&#x27;</span>, markers=<span class="literal">None</span>, height=<span class="number">2.5</span>, aspect=<span class="number">1</span>, corner=<span class="literal">False</span>, dropna=<span class="literal">False</span>, plot_kws=<span class="literal">None</span>, diag_kws=<span class="literal">None</span>, grid_kws=<span class="literal">None</span>, size=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>pairplot函数通过kind参数选择要使用的绘图函数，通过col和row参数控制网格图的行列。其部分参数及说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>data</strong></td>
+<td>接收DataFrame，表示用于绘图的数据集。默认为None</td>
+</tr>
+<tr>
+<td><strong>hue</strong></td>
+<td>接收str，表示使用指定变量为分类变量画图。默认为None</td>
+</tr>
+<tr>
+<td><strong>hue_order</strong></td>
+<td>接收str，表示在调色板中订购色调变量的级别，默认为None</td>
+</tr>
+<tr>
+<td><strong>palette</strong></td>
+<td>接收dict、调色板，表示映射hue变量的颜色集。如果是字典，则键应为hue变量中的值，默认为None</td>
+</tr>
+<tr>
+<td><strong>vars</strong></td>
+<td>接收numeric类型的变量list，表示data需要使用的变量。默认为None</td>
+</tr>
+<tr>
+<td><strong>x_vars<strong><strong>，</strong></strong>y_vars</strong></td>
+<td>接收numeric类型的变量list，表示用于图的行和列。默认为None</td>
+</tr>
+<tr>
+<td><strong>kind</strong></td>
+<td>接收scatter、kde、hist、reg，表示选择绘图函数。默认为scatter</td>
+</tr>
+<tr>
+<td><strong>height</strong></td>
+<td>接收scalar，表示网格图的高度。默认为2.5</td>
+</tr>
+<tr>
+<td><strong>aspect</strong></td>
+<td>接收scalar，表示网格图的宽度。默认为1</td>
+</tr>
+<tr>
+<td><strong>dropna</strong></td>
+<td>接收bool、optional，表示是否剔除缺失值。默认为False</td>
+</tr>
+</tbody></table>
+<p>基于波士顿房价数据，通过pairplot函数绘制多变量之间的关系图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sns.pairplot(boston[[<span class="string">&#x27;犯罪率&#x27;</span>, <span class="string">&#x27;一氧化氮含量（ppm）&#x27;</span>, <span class="string">&#x27;房间数（间）&#x27;</span>, <span class="string">&#x27;低收入人群&#x27;</span>, <span class="string">&#x27;房屋价格（千美元）&#x27;</span>]])</span><br><span class="line">plt.suptitle(<span class="string">&#x27;多变量散点图&#x27;</span>, verticalalignment=<span class="string">&#x27;bottom&#x27;</span>, y=<span class="number">1</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/%E4%B8%8B%E8%BD%BD.png" alt="下载"></p>
+<p>由图可知，犯罪率、一氧化氮含量、房间数、低收入人群、房屋价格几个字段的两两之间的相关关系，以及在对角线上显示了犯罪率、一氧化氮含量、房间数、低收入人群、房屋价格的分布情况。</p>
+<p>根据销售部已离职的员工数据，绘制指定分类变量的散点图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hr3 = sale[[<span class="string">&#x27;满意度&#x27;</span>, <span class="string">&#x27;总项目数&#x27;</span>, <span class="string">&#x27;工龄（年）&#x27;</span>, <span class="string">&#x27;薪资&#x27;</span>]]</span><br><span class="line">sns.pairplot(hr3, hue=<span class="string">&#x27;薪资&#x27;</span>)</span><br><span class="line">plt.suptitle(<span class="string">&#x27;多变量分类散点图&#x27;</span>, verticalalignment=<span class="string">&#x27;bottom&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/%E4%B8%8B%E8%BD%BD%20(1).png" alt="下载 (1)"></p>
+<h1 id="绘制回归图"><a href="#绘制回归图" class="headerlink" title="绘制回归图"></a>绘制回归图</h1><p>线性回归是利用数理统计中回归分析确定两种或两种以上变量间相互依赖的定量关系的一种统计分析方法。在seaborn库中，常见的回归图包括线性回归拟合图、线性回归网格组合图。</p>
+<h2 id="线性回归拟合图"><a href="#线性回归拟合图" class="headerlink" title="线性回归拟合图"></a>线性回归拟合图</h2><p>在seaborn库中，可以使用regplot函数绘制线性回归拟合图。regplot函数的基本使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.regplot(x=<span class="literal">None</span>, y=<span class="literal">None</span>, data=<span class="literal">None</span>, x_estimator=<span class="literal">None</span>, x_bins=<span class="literal">None</span>, x_ci=<span class="string">&#x27;ci&#x27;</span>, scatter=<span class="literal">True</span>, fit_reg=<span class="literal">True</span>, ci=<span class="number">95</span>, n_boot=<span class="number">1000</span>, units=<span class="literal">None</span>, order=<span class="number">1</span>, logistic=<span class="literal">False</span>, lowess=<span class="literal">False</span>, robust=<span class="literal">False</span>, logx=<span class="literal">False</span>, x_partial=<span class="literal">None</span>, y_partial=<span class="literal">None</span>, truncate=<span class="literal">False</span>, dropna=<span class="literal">True</span>, x_jitter=<span class="literal">None</span>, y_jitter=<span class="literal">None</span>, label=<span class="literal">None</span>, color=<span class="literal">None</span>, marker=<span class="string">&#x27;o&#x27;</span>, scatter_kws=<span class="literal">None</span>, line_kws=<span class="literal">None</span>, ax=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>regplot主要参数及说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>x<strong><strong>，</strong></strong>y</strong></td>
+<td>接收array、str、series，表示输入变量、字符串应该是data中对应列名，使用series将会在轴上显示名称。默认为None</td>
+</tr>
+<tr>
+<td><strong>data</strong></td>
+<td>接收DataFrame，表示传入数据，列为特征。默认为None</td>
+</tr>
+<tr>
+<td><strong>x_estimator</strong></td>
+<td>接收可调用的映射向量。应用于每一个x值并绘制估计图形，如果输入x_ci，将会绘制一个置信区间。默认为None</td>
+</tr>
+<tr>
+<td><strong>x_ci</strong></td>
+<td>接收ci、sd、0到100的int，表示离散值集中趋势的置信区间大小。默认为ci</td>
+</tr>
+<tr>
+<td><strong>ci</strong></td>
+<td>接收0到100的int，表示y轴置信区间大小。默认为95</td>
+</tr>
+<tr>
+<td><strong>scatter</strong></td>
+<td>接收bool，表示是否绘制散点图。默认为True</td>
+</tr>
+<tr>
+<td><strong>logistic</strong></td>
+<td>接收bool，表示是否使用逻辑回归。默认为False</td>
+</tr>
+<tr>
+<td><strong>lowess</strong></td>
+<td>接收bool，表示是否使用局域回归。默认为False</td>
+</tr>
+<tr>
+<td><strong>robust</strong></td>
+<td>接收bool，表示是否使用稳定回归。默认为False</td>
+</tr>
+<tr>
+<td><strong>logx</strong></td>
+<td>接收bool，表示是否使用对数回归。默认为False</td>
+</tr>
+<tr>
+<td><strong>{x,y}_jitter</strong></td>
+<td>接收float，表示设置均匀随机噪声添加到x或y变量中，只改变图形外观。默认为None</td>
+</tr>
+</tbody></table>
+<p>基于波士顿房价数据，利用regplot函数绘制修改置信区间ci参数前后的线性回归拟合图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 代码4-42</span></span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置中文字体</span></span><br><span class="line">sns.set_style(<span class="string">&#x27;whitegrid&#x27;</span>, &#123;<span class="string">&#x27;font.sans-serif&#x27;</span>:[<span class="string">&#x27;simhei&#x27;</span>, <span class="string">&#x27;Arial&#x27;</span>]&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 忽略警告</span></span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&#x27;ignore&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">boston = pd.read_csv(<span class="string">&#x27;../data/boston_house_prices.csv&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line">fig, axes = plt.subplots(<span class="number">1</span>, <span class="number">2</span>, figsize=(<span class="number">8</span>, <span class="number">4</span>))</span><br><span class="line">axes[<span class="number">0</span>].set_title(<span class="string">&#x27;修改前的线性回归拟合图&#x27;</span>)</span><br><span class="line">axes[<span class="number">1</span>].set_title(<span class="string">&#x27;修改后的线性回归拟合图&#x27;</span>)</span><br><span class="line">sns.regplot(x=<span class="string">&#x27;房间数（间）&#x27;</span>, y=<span class="string">&#x27;房屋价格（千美元）&#x27;</span>, data=boston, ax=axes[<span class="number">0</span>])</span><br><span class="line">sns.regplot(x=<span class="string">&#x27;房间数（间）&#x27;</span>, y=<span class="string">&#x27;房屋价格（千美元）&#x27;</span>, data=boston, ci=<span class="number">50</span>, ax=axes[<span class="number">1</span>])</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220918170703197.png" alt="image-20220918170703197"></p>
+<p>由图可知，房间数和房屋价格成线性相关关系。其中，修改置信区间ci参数前后得到的线性回归拟合图一致，准确度也不相同。</p>
+<h2 id="绘制线性回归网格组合图"><a href="#绘制线性回归网格组合图" class="headerlink" title="绘制线性回归网格组合图"></a>绘制线性回归网格组合图</h2><p>在seaborn库中，可以使用lmplot函数绘制线性回归网格组合图。lmplot函数与regplot函数有相似的使用格式，lmplot函数的使用格式如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seaborn.lmplot(x=<span class="literal">None</span>, y=<span class="literal">None</span>, data=<span class="literal">None</span>, hue=<span class="literal">None</span>, col=<span class="literal">None</span>, row=<span class="literal">None</span>, palette=<span class="literal">None</span>, col_wrap=<span class="literal">None</span>, height=<span class="number">5</span>, aspect=<span class="number">1</span>, markers=<span class="string">&#x27;o&#x27;</span>, sharex=<span class="literal">True</span>, sharey=<span class="literal">True</span>, hue_order=<span class="literal">None</span>, col_order=<span class="literal">None</span>, row_order=<span class="literal">None</span>, legend=<span class="literal">True</span>, legend_out=<span class="literal">True</span>, x_estimator=<span class="literal">None</span>, x_bins=<span class="literal">None</span>, x_ci=<span class="string">&#x27;ci&#x27;</span>, scatter=<span class="literal">True</span>, fit_reg=<span class="literal">True</span>, ci=<span class="number">95</span>, n_boot=<span class="number">1000</span>, units=<span class="literal">None</span>, seed=<span class="literal">None</span>, order=<span class="number">1</span>, logistic=<span class="literal">False</span>, lowess=<span class="literal">False</span>, robust=<span class="literal">False</span>, logx=<span class="literal">False</span>, x_partial=<span class="literal">None</span>, y_partial=<span class="literal">None</span>, truncate=<span class="literal">True</span>, x_jitter=<span class="literal">None</span>, y_jitter=<span class="literal">None</span>, scatter_kws=<span class="literal">None</span>, line_kws=<span class="literal">None</span>, size=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>lmplot函数是将regplot函数与FacetGrid类结合，能够绘制3变量的图形及修改全局高宽比，但是lmplot函数输入数据只能是数据的特征名。lmplot函数的常用参数及其说明如表所示。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>hue, col, row</strong></td>
+<td>接收str，表示定义数据子集变量，将在不同构面绘图。默认为None</td>
+</tr>
+<tr>
+<td><strong>data</strong></td>
+<td>接收DataFrame，表示传入数据，列为特征。默认为None</td>
+</tr>
+<tr>
+<td><strong>palette</strong></td>
+<td>接收调色板名称、list、dict，表示用于hue变量不同类别的颜色。默认为None</td>
+</tr>
+<tr>
+<td><strong>height</strong></td>
+<td>接收float，表示每个刻面的高度。默认为5</td>
+</tr>
+<tr>
+<td><strong>aspect</strong></td>
+<td>接收float，表示每个刻面的宽度。默认为1</td>
+</tr>
+<tr>
+<td><strong>share{x, y}</strong></td>
+<td>接收bool、col、row，表示是否共享x轴或y轴。默认为True</td>
+</tr>
+</tbody></table>
+<p>基于波士顿房价数据，以河流穿行为类别绘制低收入人群与房屋价格两个变量的回归网格组合图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sns.lmplot(x=<span class="string">&#x27;低收入人群&#x27;</span>, y=<span class="string">&#x27;房屋价格（千美元）&#x27;</span>, col=<span class="string">&#x27;河流穿行&#x27;</span>, data=boston)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs/image-20220918170937055.png" alt="image-20220918170937055"></p>
+<p>由图可知，无论是否被河流穿过，变量低收入人群与变量房屋价格呈现较密切的线性拟合趋势，且绝大部分都是分布在未被河流穿过的情况下。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://yuwan-codediary.github.io">Zhang Yuhua</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://yuwan-codediary.github.io/2022/09/18/seaborn%E7%BB%98%E5%9B%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">https://yuwan-codediary.github.io/2022/09/18/seaborn%E7%BB%98%E5%9B%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://yuwan-codediary.github.io" target="_blank">share station</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/09/16/%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9A%84%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">用于数据可视化的数据预处理</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://storage-1310438473.cos.ap-nanjing.myqcloud.com/imgs头像.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Zhang Yuhua</div><div class="author-info__description">一个啥也不会的人工智能专业的大学生的学习笔记记录网站罢了</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%86%9F%E6%82%89seaborn%E7%9A%84%E7%BB%98%E5%9B%BE%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">熟悉seaborn的绘图基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3seaborn%E4%B8%AD%E7%9A%84%E5%9F%BA%E7%A1%80%E5%9B%BE%E5%BD%A2"><span class="toc-number">1.1.</span> <span class="toc-text">了解seaborn中的基础图形</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3seaborn%E7%9A%84%E7%BB%98%E5%9B%BE%E9%A3%8E%E6%A0%BC"><span class="toc-number">1.2.</span> <span class="toc-text">了解seaborn的绘图风格</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%A2%98%E6%A0%B7%E5%BC%8F"><span class="toc-number">1.2.1.</span> <span class="toc-text">主题样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E7%B4%A0%E7%BC%A9%E6%94%BE"><span class="toc-number">1.2.2.</span> <span class="toc-text">元素缩放</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%B9%E6%A1%86%E6%8E%A7%E5%88%B6"><span class="toc-number">1.2.3.</span> <span class="toc-text">边框控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%86%9F%E6%82%89seaborn%E7%9A%84%E8%B0%83%E8%89%B2%E6%9D%BF"><span class="toc-number">1.3.</span> <span class="toc-text">熟悉seaborn的调色板</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E6%80%A7%E8%B0%83%E8%89%B2%E6%9D%BF"><span class="toc-number">1.3.1.</span> <span class="toc-text">定性调色板</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%86%E5%BD%A2%E9%A2%9C%E8%89%B2%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">使用圆形颜色系统</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8xkcd%E9%A2%9C%E8%89%B2"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">使用xkcd颜色</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E7%BB%AD%E8%B0%83%E8%89%B2%E6%9D%BF"><span class="toc-number">1.3.2.</span> <span class="toc-text">连续调色板</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Color-Brewer%E5%BA%93"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">Color Brewer库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cubehelix%E8%B0%83%E8%89%B2%E6%9D%BF"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">cubehelix调色板</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%9E%E7%BB%AD%E8%B0%83%E8%89%B2%E6%9D%BF"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">自定义连续调色板</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E8%B0%83%E8%89%B2%E6%9D%BF"><span class="toc-number">1.3.3.</span> <span class="toc-text">离散调色板</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E4%B8%AD%E8%BE%83%E5%A5%BD%E7%9A%84%E7%A6%BB%E6%95%A3%E8%B0%83%E8%89%B2%E6%9D%BF"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">默认中较好的离散调色板</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%A6%BB%E6%95%A3%E8%B0%83%E8%89%B2%E6%9D%BF"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">自定义离散调色板</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4%E8%B0%83%E8%89%B2%E6%9D%BF"><span class="toc-number">1.3.4.</span> <span class="toc-text">设置默认调色板</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E5%85%B3%E7%B3%BB%E5%9B%BE"><span class="toc-number">2.</span> <span class="toc-text">绘制关系图</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E6%95%A3%E7%82%B9%E5%9B%BE"><span class="toc-number">2.1.</span> <span class="toc-text">绘制散点图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E6%8A%98%E7%BA%BF%E5%9B%BE"><span class="toc-number">2.2.</span> <span class="toc-text">绘制折线图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E7%83%AD%E5%8A%9B%E5%9B%BE"><span class="toc-number">2.3.</span> <span class="toc-text">绘制热力图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E7%9F%A9%E9%98%B5%E7%BD%91%E6%A0%BC%E5%9B%BE"><span class="toc-number">2.4.</span> <span class="toc-text">绘制矩阵网格图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E5%85%B3%E7%B3%BB%E7%BD%91%E6%A0%BC%E7%BB%84%E5%90%88%E5%9B%BE"><span class="toc-number">2.5.</span> <span class="toc-text">绘制关系网格组合图</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E5%88%86%E7%B1%BB%E5%9B%BE"><span class="toc-number">3.</span> <span class="toc-text">绘制分类图</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E6%9D%A1%E5%BD%A2%E5%9B%BE"><span class="toc-number">3.1.</span> <span class="toc-text">绘制条形图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E5%8D%95%E5%8F%98%E9%87%8F%E5%88%86%E5%B8%83%E5%9B%BE"><span class="toc-number">3.2.</span> <span class="toc-text">绘制单变量分布图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E5%88%86%E7%B1%BB%E6%95%A3%E7%82%B9%E5%9B%BE"><span class="toc-number">3.3.</span> <span class="toc-text">绘制分类散点图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#stripplot%E5%87%BD%E6%95%B0"><span class="toc-number">3.3.1.</span> <span class="toc-text">stripplot函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swarmplot%E5%87%BD%E6%95%B0"><span class="toc-number">3.3.2.</span> <span class="toc-text">swarmplot函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E5%A2%9E%E5%BC%BA%E6%95%A3%E7%82%B9%E5%9B%BE"><span class="toc-number">3.4.</span> <span class="toc-text">绘制增强散点图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E5%88%86%E7%B1%BB%E7%BD%91%E6%A0%BC%E7%BB%84%E5%90%88%E5%9B%BE"><span class="toc-number">3.5.</span> <span class="toc-text">绘制分类网格组合图</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E5%9B%9E%E5%BD%92%E5%9B%BE"><span class="toc-number">4.</span> <span class="toc-text">绘制回归图</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%8B%9F%E5%90%88%E5%9B%BE"><span class="toc-number">4.1.</span> <span class="toc-text">线性回归拟合图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BD%91%E6%A0%BC%E7%BB%84%E5%90%88%E5%9B%BE"><span class="toc-number">4.2.</span> <span class="toc-text">绘制线性回归网格组合图</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/09/18/seaborn%E7%BB%98%E5%9B%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="seaborn绘图学习笔记"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="seaborn绘图学习笔记"/></a><div class="content"><a class="title" href="/2022/09/18/seaborn%E7%BB%98%E5%9B%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="seaborn绘图学习笔记">seaborn绘图学习笔记</a><time datetime="2022-09-18T10:24:49.000Z" title="发表于 2022-09-18 18:24:49">2022-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/16/%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9A%84%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/" title="用于数据可视化的数据预处理"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用于数据可视化的数据预处理"/></a><div class="content"><a class="title" href="/2022/09/16/%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9A%84%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/" title="用于数据可视化的数据预处理">用于数据可视化的数据预处理</a><time datetime="2022-09-16T08:11:33.000Z" title="发表于 2022-09-16 16:11:33">2022-09-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/14/pyecharts%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="pyecharts学习笔记"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="pyecharts学习笔记"/></a><div class="content"><a class="title" href="/2022/09/14/pyecharts%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="pyecharts学习笔记">pyecharts学习笔记</a><time datetime="2022-09-14T08:43:23.000Z" title="发表于 2022-09-14 16:43:23">2022-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/14/matplolib%E5%AD%A6%E4%B9%A0/" title="matplolib学习笔记"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="matplolib学习笔记"/></a><div class="content"><a class="title" href="/2022/09/14/matplolib%E5%AD%A6%E4%B9%A0/" title="matplolib学习笔记">matplolib学习笔记</a><time datetime="2022-09-14T02:32:07.000Z" title="发表于 2022-09-14 10:32:07">2022-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/13/numpy%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="numpy常用命令"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="numpy常用命令"/></a><div class="content"><a class="title" href="/2022/09/13/numpy%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="numpy常用命令">numpy常用命令</a><time datetime="2022-09-13T09:32:37.000Z" title="发表于 2022-09-13 17:32:37">2022-09-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Zhang Yuhua</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
